@@ -1,6 +1,4 @@
-
-export const config =
-    {
-        API_BASE_URL: '/api',
-        APP_VERSION: 'local',
-    }
+export const config = {
+  API_BASE_URL: "https://localhost:7178/",
+  APP_VERSION: "local",
+};
