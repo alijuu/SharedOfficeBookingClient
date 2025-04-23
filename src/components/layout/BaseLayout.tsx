@@ -6,40 +6,96 @@ import {
   Container,
   Box,
   Button,
+  TextField,
+  Menu,
+  IconButton,
+  InputAdornment,
+  MenuItem,
 } from "@mui/material";
-import { authProvider } from "../../authProvider.ts";
-import { useNavigate } from "@tanstack/react-router";
-
+// import { authProvider } from "../../authProvider.ts";
+import SearchIcon from "@mui/icons-material/Search";
+// import { useNavigate } from "@tanstack/react-router";
+import MenuIcon from "@mui/icons-material/Menu";
 export function BaseLayout({ children }: { children: React.ReactNode }) {
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   return (
-    <Box display="flex" flexDirection="column" minHeight={"100vh"}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      minHeight="100vh"
+      bgcolor="#f7fafa"
+    >
       {/* Header */}
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" component="div">
-            Shared Office Booking
+      <AppBar
+        position="static"
+        elevation={0}
+        sx={{ bgcolor: "white", color: "black" }}
+      >
+        <Toolbar
+          sx={{ justifyContent: "space-between", gap: 2, flexWrap: "wrap" }}
+        >
+          {/* Logo */}
+          <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
+            Office Booking
           </Typography>
-          <Button
-            onClick={async () => {
-              try {
-                await authProvider.logout();
-                navigate({ to: "/login" });
-              } catch (err) {
-                console.log(err);
-              }
+          {/* Search */}
+          <TextField
+            placeholder="Search for an office"
+            variant="outlined"
+            size="small"
+            sx={{ minWidth: 240, bgcolor: "#f1f3f5", borderRadius: 2 }}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <SearchIcon />
+                </InputAdornment>
+              ),
             }}
-            variant="contained"
-          >
-            Logout
-          </Button>
+          />
+
+          {/* Desktop Menu */}
+          <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
+            <Button color="inherit">Contact</Button>
+            <Button color="inherit">For Businesses</Button>
+            <Button color="inherit">Login</Button>
+            <Button variant="outlined">Sign Up</Button>
+          </Box>
+
+          {/* Mobile Menu Icon */}
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+            <IconButton onClick={handleMenuClick}>
+              <MenuIcon />
+            </IconButton>
+            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+              <MenuItem onClick={handleClose}>Contact</MenuItem>
+              <MenuItem onClick={handleClose}>For Businesses</MenuItem>
+              <MenuItem onClick={handleClose}>Login</MenuItem>
+              <MenuItem onClick={handleClose}>Sign Up</MenuItem>
+            </Menu>
+          </Box>
         </Toolbar>
       </AppBar>
-      <Container sx={{ my: 4 }}>{children}</Container>
 
+      {/* Main Content */}
+      <Container sx={{ my: 4, flex: 1 }}>{children}</Container>
+
+      {/* Footer */}
       <Box
         component="footer"
-        sx={{ py: 2, textAlign: "center", bgcolor: "grey.200", mt: "auto" }}
+        sx={{
+          py: 2,
+          textAlign: "center",
+          bgcolor: "grey.200",
+          mt: "auto",
+        }}
       >
         <Typography variant="body2" color="text.secondary">
           © {new Date().getFullYear()} Shared Office Booking. All rights
