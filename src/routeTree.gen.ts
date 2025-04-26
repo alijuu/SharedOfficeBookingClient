@@ -11,13 +11,22 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TestImport } from './routes/test'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthHomeImport } from './routes/_auth/home'
+import { Route as AuthCreateImport } from './routes/_auth/create'
+import { Route as AuthWorkspaceIdImport } from './routes/_auth/workspace/$id'
 
 // Create/Update Routes
+
+const TestRoute = TestImport.update({
+  id: '/test',
+  path: '/test',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const RegisterRoute = RegisterImport.update({
   id: '/register',
@@ -45,6 +54,18 @@ const IndexRoute = IndexImport.update({
 const AuthHomeRoute = AuthHomeImport.update({
   id: '/home',
   path: '/home',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthCreateRoute = AuthCreateImport.update({
+  id: '/create',
+  path: '/create',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthWorkspaceIdRoute = AuthWorkspaceIdImport.update({
+  id: '/workspace/$id',
+  path: '/workspace/$id',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -80,11 +101,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
+    '/test': {
+      id: '/test'
+      path: '/test'
+      fullPath: '/test'
+      preLoaderRoute: typeof TestImport
+      parentRoute: typeof rootRoute
+    }
+    '/_auth/create': {
+      id: '/_auth/create'
+      path: '/create'
+      fullPath: '/create'
+      preLoaderRoute: typeof AuthCreateImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/home': {
       id: '/_auth/home'
       path: '/home'
       fullPath: '/home'
       preLoaderRoute: typeof AuthHomeImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/workspace/$id': {
+      id: '/_auth/workspace/$id'
+      path: '/workspace/$id'
+      fullPath: '/workspace/$id'
+      preLoaderRoute: typeof AuthWorkspaceIdImport
       parentRoute: typeof AuthImport
     }
   }
@@ -93,11 +135,15 @@ declare module '@tanstack/react-router' {
 // Create and export the route tree
 
 interface AuthRouteChildren {
+  AuthCreateRoute: typeof AuthCreateRoute
   AuthHomeRoute: typeof AuthHomeRoute
+  AuthWorkspaceIdRoute: typeof AuthWorkspaceIdRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
+  AuthCreateRoute: AuthCreateRoute,
   AuthHomeRoute: AuthHomeRoute,
+  AuthWorkspaceIdRoute: AuthWorkspaceIdRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -107,7 +153,10 @@ export interface FileRoutesByFullPath {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/test': typeof TestRoute
+  '/create': typeof AuthCreateRoute
   '/home': typeof AuthHomeRoute
+  '/workspace/$id': typeof AuthWorkspaceIdRoute
 }
 
 export interface FileRoutesByTo {
@@ -115,7 +164,10 @@ export interface FileRoutesByTo {
   '': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/test': typeof TestRoute
+  '/create': typeof AuthCreateRoute
   '/home': typeof AuthHomeRoute
+  '/workspace/$id': typeof AuthWorkspaceIdRoute
 }
 
 export interface FileRoutesById {
@@ -124,15 +176,43 @@ export interface FileRoutesById {
   '/_auth': typeof AuthRouteWithChildren
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
+  '/test': typeof TestRoute
+  '/_auth/create': typeof AuthCreateRoute
   '/_auth/home': typeof AuthHomeRoute
+  '/_auth/workspace/$id': typeof AuthWorkspaceIdRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '' | '/login' | '/register' | '/home'
+  fullPaths:
+    | '/'
+    | ''
+    | '/login'
+    | '/register'
+    | '/test'
+    | '/create'
+    | '/home'
+    | '/workspace/$id'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '' | '/login' | '/register' | '/home'
-  id: '__root__' | '/' | '/_auth' | '/login' | '/register' | '/_auth/home'
+  to:
+    | '/'
+    | ''
+    | '/login'
+    | '/register'
+    | '/test'
+    | '/create'
+    | '/home'
+    | '/workspace/$id'
+  id:
+    | '__root__'
+    | '/'
+    | '/_auth'
+    | '/login'
+    | '/register'
+    | '/test'
+    | '/_auth/create'
+    | '/_auth/home'
+    | '/_auth/workspace/$id'
   fileRoutesById: FileRoutesById
 }
 
@@ -141,6 +221,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRouteWithChildren
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
+  TestRoute: typeof TestRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -148,6 +229,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRouteWithChildren,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
+  TestRoute: TestRoute,
 }
 
 export const routeTree = rootRoute
@@ -163,7 +245,8 @@ export const routeTree = rootRoute
         "/",
         "/_auth",
         "/login",
-        "/register"
+        "/register",
+        "/test"
       ]
     },
     "/": {
@@ -172,7 +255,9 @@ export const routeTree = rootRoute
     "/_auth": {
       "filePath": "_auth.tsx",
       "children": [
-        "/_auth/home"
+        "/_auth/create",
+        "/_auth/home",
+        "/_auth/workspace/$id"
       ]
     },
     "/login": {
@@ -181,8 +266,19 @@ export const routeTree = rootRoute
     "/register": {
       "filePath": "register.tsx"
     },
+    "/test": {
+      "filePath": "test.tsx"
+    },
+    "/_auth/create": {
+      "filePath": "_auth/create.tsx",
+      "parent": "/_auth"
+    },
     "/_auth/home": {
       "filePath": "_auth/home.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/workspace/$id": {
+      "filePath": "_auth/workspace/$id.tsx",
       "parent": "/_auth"
     }
   }

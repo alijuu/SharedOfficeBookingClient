@@ -16,8 +16,10 @@ import {
 import SearchIcon from "@mui/icons-material/Search";
 // import { useNavigate } from "@tanstack/react-router";
 import MenuIcon from "@mui/icons-material/Menu";
+import { authProvider } from "../../authProvider.ts";
+import { useNavigate } from "@tanstack/react-router";
 export function BaseLayout({ children }: { children: React.ReactNode }) {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -25,6 +27,10 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const logOut = async () => {
+    await authProvider.logout();
+    navigate({ to: "/login" });
   };
   return (
     <Box
@@ -62,11 +68,19 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
           />
 
           {/* Desktop Menu */}
+
           <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
-            <Button color="inherit">Contact</Button>
-            <Button color="inherit">For Businesses</Button>
-            <Button color="inherit">Login</Button>
-            <Button variant="outlined">Sign Up</Button>
+            <Button
+              color="inherit"
+              onClick={() => {
+                navigate({ to: "/create" });
+              }}
+            >
+              Create Workspace
+            </Button>
+            <Button color="inherit" onClick={logOut}>
+              Log out
+            </Button>
           </Box>
 
           {/* Mobile Menu Icon */}

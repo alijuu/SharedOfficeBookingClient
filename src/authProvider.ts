@@ -1,5 +1,10 @@
-import { AuthRequest, AuthResponse } from "./http/auth/data.ts";
+import {
+  AuthRequest,
+  AuthResponse,
+  RegisterRequest,
+} from "./http/auth/data.ts";
 import { apiClient, queryClient } from "./util/client.ts";
+import { ApplicationHttpError } from "./util/error.ts";
 
 // let username: string | undefined;
 let prevPassword: string | undefined;
@@ -28,9 +33,10 @@ export const authProvider = {
         success: true,
       };
     } catch (error) {
+      const appError = error as ApplicationHttpError<unknown, unknown>;
       return {
         success: false,
-        error: error,
+        error: appError,
       };
     }
   },
@@ -41,6 +47,23 @@ export const authProvider = {
     return {
       success: true,
     };
+  },
+  register: async (data: RegisterRequest) => {
+    try {
+      await apiClient.post<AuthResponse>(
+        "/register",
+        data satisfies RegisterRequest,
+      );
+      return {
+        success: true,
+      };
+    } catch (error) {
+      const appError = error as ApplicationHttpError<unknown, unknown>;
+      return {
+        success: false,
+        error: appError,
+      };
+    }
   },
   // getIdentity: async (): Promise<Al> => {
   //     const response = await apiClient.get<l>('/admin/auth/info')
