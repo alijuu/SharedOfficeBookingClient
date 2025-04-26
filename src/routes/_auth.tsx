@@ -1,15 +1,22 @@
-import {createFileRoute, redirect} from '@tanstack/react-router'
-import {isAuthenticated} from "../util/client.ts";
+import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
+import { isAuthenticated } from "../util/client.ts";
 
-export const Route = createFileRoute('/_auth')({
+import { BaseLayout } from "../components/layout/BaseLayout.tsx";
+
+export const Route = createFileRoute("/_auth")({
   component: RouteComponent,
-  beforeLoad: ()=>{
-    if(isAuthenticated()){
-      throw redirect({ to: '/login' })
+  beforeLoad: () => {
+    if (!isAuthenticated()) {
+      throw redirect({ to: "/login" });
     }
-  }
-})
+  },
+});
 
 function RouteComponent() {
-  return <div>Hello "/__authenticated"!</div>
+  // const navigate = useNavigate();
+  return (
+    <BaseLayout>
+      <Outlet />
+    </BaseLayout>
+  );
 }

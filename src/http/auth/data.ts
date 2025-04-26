@@ -1,12 +1,24 @@
 export interface AuthResponse {
-    tokenType: string
-    accessToken: string
-    expiresIn: number
-    refreshToken: string
+  token: string;
+  // accessToken: string
+  // expiresIn: number
+  // refreshToken: string
+}
+
+export interface RegisterResponse {
+  message: string;
+  // accessToken: string
+  // expiresIn: number
+  // refreshToken: string
 }
 
 export interface AuthRequest {
-    email?: string
-    password?: string
-    remember?: boolean
+  username: string;
+  password: string;
+}
+
+export interface RegisterRequest {
+  username: string;
+  password: string;
+  email: string;
 }
