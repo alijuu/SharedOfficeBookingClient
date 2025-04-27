@@ -1,39 +1,50 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Box, Button, Paper, TextField, Typography } from "@mui/material";
+import {
+  Backdrop,
+  Box,
+  Button,
+  CircularProgress,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { valibotResolver } from "@hookform/resolvers/valibot";
 import { useRegisterSchema } from "../util/authForm.ts";
 import { RegisterRequest } from "../http/auth/data.ts";
-import { authProvider } from "../authProvider.ts";
 import { ErrorOutline } from "@mui/icons-material";
 import { useState } from "react";
-import { ApplicationHttpError } from "../util/error.ts";
+import { parseAxiosError } from "../util/error.ts";
+import { useRegister } from "../http/auth/auth.ts";
 export const Route = createFileRoute("/register")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
   const [error, setError] = useState<string>();
+  const [showLoader, setShowLoader] = useState(false);
   const { control, handleSubmit } = useForm({
     resolver: valibotResolver(useRegisterSchema()),
   });
   const navigate = useNavigate();
+  const { mutate: register, isPending } = useRegister();
   const onSubmit = async (data: RegisterRequest) => {
-    console.log("Form Data:", data);
-    try {
-      const result = await authProvider.register(data);
-      if (!result.success) {
-        console.error("Registration failed:", result.error);
-        setError(result?.error?.message);
-        return;
-      }
-      await navigate({ to: "/login" });
-    } catch (error) {
-      const appError = error as ApplicationHttpError<unknown, unknown>;
-      setError(appError.message);
-      console.log(error);
-    }
+    setShowLoader(true);
+    setError(undefined);
+    register(data, {
+      onSuccess: async () => {
+        await navigate({ to: "/home" });
+      },
+      onError: async (error: Error) => {
+        const errorMessage = parseAxiosError(error);
+        setError(errorMessage);
+      },
+    });
+    setTimeout(() => {
+      setShowLoader(false); // Hide the loader after 2 seconds
+    }, 500);
   };
+
   return (
     <Box
       sx={{
@@ -57,10 +68,17 @@ function RouteComponent() {
           alignItems: "center",
           gap: 2,
           backgroundColor: "#fff",
+          position: "relative",
         }}
         component="form"
         onSubmit={handleSubmit(onSubmit)}
       >
+        <Backdrop
+          open={showLoader || isPending}
+          sx={{ position: "absolute", zIndex: "50", borderRadius: 4 }}
+        >
+          <CircularProgress color="inherit" />
+        </Backdrop>
         <Typography variant="h5" fontWeight="bold" color="primary">
           Welcome
         </Typography>
@@ -129,7 +147,12 @@ function RouteComponent() {
         >
           Already have an account? Log in
         </Typography>
-        <Button variant="contained" fullWidth type="submit">
+        <Button
+          variant="contained"
+          fullWidth
+          type="submit"
+          disabled={isPending}
+        >
           Register
         </Button>
       </Paper>

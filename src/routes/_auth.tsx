@@ -13,7 +13,6 @@ export const Route = createFileRoute("/_auth")({
 });
 
 function RouteComponent() {
-  // const navigate = useNavigate();
   return (
     <BaseLayout>
       <Outlet />

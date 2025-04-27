@@ -8,3 +8,9 @@ export interface Workspace {
   description: string;
   floorPlan: number[][];
 }
+export interface WorkspacesResponse {
+  items: Workspace[];
+  page: number;
+  pageSize: number;
+  totalCount: number;
+}

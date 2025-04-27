@@ -1,17 +1,8 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { apiClient, queryClient } from "../../util/client.ts";
+import { createQueryHook } from "../../util/queryClientHelper.ts";
+import { WorkspacesResponse } from "../../resources/workspaces/model.ts";
 
-export function useGetAllWorkspaces() {
-  return useQuery({
-    queryKey: ["workspace"],
-    queryFn: async () => {
-      return await apiClient.request({
-        method: "GET",
-        url: `/api/workspaces/get`,
-      });
-    },
-  });
-}
 export interface CreateWorkspaceDto {
   name: string;
   address: string;
@@ -32,3 +23,14 @@ export function useCreateWorkspace() {
     },
   });
 }
+
+export const useGetAllWorkspaces = createQueryHook<WorkspacesResponse>({
+  queryKey: ["workspace"],
+  queryFn: async () => {
+    const { data } = await apiClient.request({
+      method: "GET",
+      url: "/api/workspaces/get",
+    });
+    return data;
+  },
+});

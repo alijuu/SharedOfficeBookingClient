@@ -23,3 +23,26 @@ export interface ValidationErrors {
     | boolean
     | { key: string; message: string };
 }
+
+export function parseAxiosError(error: unknown): string {
+  if (error && typeof error === "object" && "isAxiosError" in error) {
+    const axiosError = error as AxiosError;
+
+    const responseData = axiosError.response?.data as
+      | { message?: string }
+      | undefined;
+
+    if (responseData?.message) {
+      return responseData.message;
+    }
+
+    const statusText = axiosError.response?.statusText;
+    if (statusText) {
+      return statusText;
+    }
+
+    return axiosError.message || "An unknown error occurred.";
+  }
+
+  return "An unknown error occurred.";
+}

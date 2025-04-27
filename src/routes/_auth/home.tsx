@@ -2,11 +2,11 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useGetAllWorkspaces } from "../../http/workspace/data.ts";
 import WorkspaceCard from "../../components/WorkspaceCard.tsx";
 import { Workspace } from "../../resources/workspaces/model.ts";
-import { Box } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 
 export const Route = createFileRoute("/_auth/home")({
   component: RouteComponent,
-  loader: async () => {},
+  pendingComponent: () => <CircularProgress color="inherit" />,
 });
 
 function renderItem(workspace: Workspace) {
@@ -26,10 +26,29 @@ function renderItem(workspace: Workspace) {
 
 function RouteComponent() {
   const { data, isLoading } = useGetAllWorkspaces();
+  if (isLoading)
+    return (
+      <Box
+        sx={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <CircularProgress
+          sx={{
+            height: "100%",
+          }}
+        />
+      </Box>
+    );
 
-  if (isLoading) return <div>Loading...</div>;
-
-  const items = data?.data?.items ?? [];
+  const items = data?.items ?? [];
 
   return (
     <Box sx={{ display: "flex", flexWrap: "wrap", flexShrink: 0, flexGrow: 1 }}>

@@ -12,12 +12,10 @@ import {
   InputAdornment,
   MenuItem,
 } from "@mui/material";
-// import { authProvider } from "../../authProvider.ts";
 import SearchIcon from "@mui/icons-material/Search";
-// import { useNavigate } from "@tanstack/react-router";
 import MenuIcon from "@mui/icons-material/Menu";
-import { authProvider } from "../../authProvider.ts";
 import { useNavigate } from "@tanstack/react-router";
+import { useLogout } from "../../http/auth/auth.ts";
 export function BaseLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -28,10 +26,9 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const logOut = async () => {
-    await authProvider.logout();
-    navigate({ to: "/login" });
-  };
+
+  const { logout } = useLogout();
+
   return (
     <Box
       display="flex"
@@ -78,11 +75,10 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
             >
               Create Workspace
             </Button>
-            <Button color="inherit" onClick={logOut}>
+            <Button color="inherit" onClick={logout}>
               Log out
             </Button>
           </Box>
-
           {/* Mobile Menu Icon */}
           <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton onClick={handleMenuClick}>
@@ -99,7 +95,9 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
       </AppBar>
 
       {/* Main Content */}
-      <Container sx={{ my: 4, flex: 1 }}>{children}</Container>
+      <Container sx={{ my: 4, flex: 1, position: "relative" }}>
+        {children}
+      </Container>
 
       {/* Footer */}
       <Box
