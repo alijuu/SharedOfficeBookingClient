@@ -18,7 +18,9 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthHomeImport } from './routes/_auth/home'
 import { Route as AuthCreateImport } from './routes/_auth/create'
+import { Route as AuthUserIndexImport } from './routes/_auth/user/index'
 import { Route as AuthWorkspaceIdImport } from './routes/_auth/workspace/$id'
+import { Route as AuthUserSettingsImport } from './routes/_auth/user/settings'
 
 // Create/Update Routes
 
@@ -63,9 +65,21 @@ const AuthCreateRoute = AuthCreateImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
+const AuthUserIndexRoute = AuthUserIndexImport.update({
+  id: '/user/',
+  path: '/user/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
 const AuthWorkspaceIdRoute = AuthWorkspaceIdImport.update({
   id: '/workspace/$id',
   path: '/workspace/$id',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthUserSettingsRoute = AuthUserSettingsImport.update({
+  id: '/user/settings',
+  path: '/user/settings',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -122,11 +136,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthHomeImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/user/settings': {
+      id: '/_auth/user/settings'
+      path: '/user/settings'
+      fullPath: '/user/settings'
+      preLoaderRoute: typeof AuthUserSettingsImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/workspace/$id': {
       id: '/_auth/workspace/$id'
       path: '/workspace/$id'
       fullPath: '/workspace/$id'
       preLoaderRoute: typeof AuthWorkspaceIdImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/user/': {
+      id: '/_auth/user/'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof AuthUserIndexImport
       parentRoute: typeof AuthImport
     }
   }
@@ -137,13 +165,17 @@ declare module '@tanstack/react-router' {
 interface AuthRouteChildren {
   AuthCreateRoute: typeof AuthCreateRoute
   AuthHomeRoute: typeof AuthHomeRoute
+  AuthUserSettingsRoute: typeof AuthUserSettingsRoute
   AuthWorkspaceIdRoute: typeof AuthWorkspaceIdRoute
+  AuthUserIndexRoute: typeof AuthUserIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthCreateRoute: AuthCreateRoute,
   AuthHomeRoute: AuthHomeRoute,
+  AuthUserSettingsRoute: AuthUserSettingsRoute,
   AuthWorkspaceIdRoute: AuthWorkspaceIdRoute,
+  AuthUserIndexRoute: AuthUserIndexRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -156,7 +188,9 @@ export interface FileRoutesByFullPath {
   '/test': typeof TestRoute
   '/create': typeof AuthCreateRoute
   '/home': typeof AuthHomeRoute
+  '/user/settings': typeof AuthUserSettingsRoute
   '/workspace/$id': typeof AuthWorkspaceIdRoute
+  '/user': typeof AuthUserIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -167,7 +201,9 @@ export interface FileRoutesByTo {
   '/test': typeof TestRoute
   '/create': typeof AuthCreateRoute
   '/home': typeof AuthHomeRoute
+  '/user/settings': typeof AuthUserSettingsRoute
   '/workspace/$id': typeof AuthWorkspaceIdRoute
+  '/user': typeof AuthUserIndexRoute
 }
 
 export interface FileRoutesById {
@@ -179,7 +215,9 @@ export interface FileRoutesById {
   '/test': typeof TestRoute
   '/_auth/create': typeof AuthCreateRoute
   '/_auth/home': typeof AuthHomeRoute
+  '/_auth/user/settings': typeof AuthUserSettingsRoute
   '/_auth/workspace/$id': typeof AuthWorkspaceIdRoute
+  '/_auth/user/': typeof AuthUserIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -192,7 +230,9 @@ export interface FileRouteTypes {
     | '/test'
     | '/create'
     | '/home'
+    | '/user/settings'
     | '/workspace/$id'
+    | '/user'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -202,7 +242,9 @@ export interface FileRouteTypes {
     | '/test'
     | '/create'
     | '/home'
+    | '/user/settings'
     | '/workspace/$id'
+    | '/user'
   id:
     | '__root__'
     | '/'
@@ -212,7 +254,9 @@ export interface FileRouteTypes {
     | '/test'
     | '/_auth/create'
     | '/_auth/home'
+    | '/_auth/user/settings'
     | '/_auth/workspace/$id'
+    | '/_auth/user/'
   fileRoutesById: FileRoutesById
 }
 
@@ -257,7 +301,9 @@ export const routeTree = rootRoute
       "children": [
         "/_auth/create",
         "/_auth/home",
-        "/_auth/workspace/$id"
+        "/_auth/user/settings",
+        "/_auth/workspace/$id",
+        "/_auth/user/"
       ]
     },
     "/login": {
@@ -277,8 +323,16 @@ export const routeTree = rootRoute
       "filePath": "_auth/home.tsx",
       "parent": "/_auth"
     },
+    "/_auth/user/settings": {
+      "filePath": "_auth/user/settings.tsx",
+      "parent": "/_auth"
+    },
     "/_auth/workspace/$id": {
       "filePath": "_auth/workspace/$id.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/user/": {
+      "filePath": "_auth/user/index.tsx",
       "parent": "/_auth"
     }
   }

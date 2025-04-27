@@ -16,7 +16,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useNavigate } from "@tanstack/react-router";
 import ProfileMenu from "../profile/ProfileMenu.tsx";
-export function BaseLayout({ children }: { children: React.ReactNode }) {
+export function HomeLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -28,17 +28,11 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <Box
-      display="flex"
-      flexDirection="column"
-      minHeight="100vh"
-      bgcolor="#f7fafa"
-    >
-      {/* Header */}
+    <Box display="flex" width="100%" flexDirection="column">
       <AppBar
         position="static"
         elevation={0}
-        sx={{ bgcolor: "white", color: "black" }}
+        sx={{ bgcolor: "white", color: "black", width: "100%" }}
       >
         <Toolbar
           sx={{ justifyContent: "space-between", gap: 2, flexWrap: "wrap" }}
@@ -86,27 +80,12 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
           </Box>
         </Toolbar>
       </AppBar>
-
-      {/* Main Content */}
-      <Container sx={{ my: 4, flex: 1, position: "relative" }}>
+      <Container
+        sx={{ my: 4, flex: 1, position: "relative", width: "100%" }}
+        maxWidth={false}
+      >
         {children}
       </Container>
-
-      {/* Footer */}
-      <Box
-        component="footer"
-        sx={{
-          py: 2,
-          textAlign: "center",
-          bgcolor: "grey.200",
-          mt: "auto",
-        }}
-      >
-        <Typography variant="body2" color="text.secondary">
-          © {new Date().getFullYear()} Shared Office Booking. All rights
-          reserved.
-        </Typography>
-      </Box>
     </Box>
   );
 }
