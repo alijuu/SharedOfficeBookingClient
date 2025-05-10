@@ -3,7 +3,6 @@ import { useGetAllWorkspaces } from "../../http/workspace/data.ts";
 import WorkspaceCard from "../../components/WorkspaceCard.tsx";
 import { Workspace } from "../../resources/workspaces/model.ts";
 import { Box, CircularProgress } from "@mui/material";
-import { BaseLayout } from "../../components/layout/BaseLayout.tsx";
 import { HomeLayout } from "../../components/layout/HomeLayout.tsx";
 
 export const Route = createFileRoute("/_auth/home")({
@@ -30,7 +29,7 @@ function RouteComponent() {
   const { data, isLoading } = useGetAllWorkspaces();
   if (isLoading)
     return (
-      <BaseLayout>
+      <HomeLayout>
         <Box
           sx={{
             position: "absolute",
@@ -49,7 +48,7 @@ function RouteComponent() {
             }}
           />
         </Box>
-      </BaseLayout>
+      </HomeLayout>
     );
 
   const items = data?.items ?? [];

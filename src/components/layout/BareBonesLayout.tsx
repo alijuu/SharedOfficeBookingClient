@@ -9,7 +9,6 @@ export function BareBonesLayout({ children }: { children: React.ReactNode }) {
       minHeight="100vh"
       bgcolor="#f7fafa"
       width="100%"
-      padding="0"
     >
       <Box>{children}</Box>
       <Box
