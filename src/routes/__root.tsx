@@ -1,24 +1,23 @@
-import {
-  Link,
-  Outlet,
-  createRootRouteWithContext,
-} from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 // import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import type { QueryClient } from "@tanstack/react-query";
-import { AuthContext } from "../auth.tsx";
+import { CircularProgress } from "@mui/material";
+import { AuthContext } from "../context/auth/AuthContext.ts";
+import { BareBonesLayout } from "../components/layout/BareBonesLayout.tsx";
+import NotFound from "../components/NotFound/NotFound.tsx";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   auth?: AuthContext;
 }>()({
   component: RootComponent,
+  pendingComponent: () => <CircularProgress color="inherit" />,
   notFoundComponent: () => {
     return (
-      <div>
-        <p>This is the notFoundComponent configured on root route</p>
-        <Link to="/">Start Over</Link>
-      </div>
+      <BareBonesLayout>
+        <NotFound />
+      </BareBonesLayout>
     );
   },
 });

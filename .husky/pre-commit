@@ -1,0 +1,4 @@
+npm exec tsc
+npm exec lint-staged
+
+

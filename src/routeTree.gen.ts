@@ -18,7 +18,13 @@ import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthHomeImport } from './routes/_auth/home'
 import { Route as AuthCreateImport } from './routes/_auth/create'
-import { Route as AuthWorkspaceIdImport } from './routes/_auth/workspace/$id'
+import { Route as AuthUserIndexImport } from './routes/_auth/user/index'
+import { Route as AuthUserSettingsImport } from './routes/_auth/user/settings'
+import { Route as AuthWorkspaceIdIndexImport } from './routes/_auth/workspace/$id/index'
+import { Route as AuthWorkspaceIdBookImport } from './routes/_auth/workspace/$id/book'
+import { Route as AuthAdminWorkspaceCreateImport } from './routes/_auth/admin/workspace/create'
+import { Route as AuthAdminWorkspaceIdIndexImport } from './routes/_auth/admin/workspace/$id/index'
+import { Route as AuthAdminWorkspaceIdEditImport } from './routes/_auth/admin/workspace/$id/edit'
 
 // Create/Update Routes
 
@@ -63,9 +69,45 @@ const AuthCreateRoute = AuthCreateImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
-const AuthWorkspaceIdRoute = AuthWorkspaceIdImport.update({
-  id: '/workspace/$id',
-  path: '/workspace/$id',
+const AuthUserIndexRoute = AuthUserIndexImport.update({
+  id: '/user/',
+  path: '/user/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthUserSettingsRoute = AuthUserSettingsImport.update({
+  id: '/user/settings',
+  path: '/user/settings',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthWorkspaceIdIndexRoute = AuthWorkspaceIdIndexImport.update({
+  id: '/workspace/$id/',
+  path: '/workspace/$id/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthWorkspaceIdBookRoute = AuthWorkspaceIdBookImport.update({
+  id: '/workspace/$id/book',
+  path: '/workspace/$id/book',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthAdminWorkspaceCreateRoute = AuthAdminWorkspaceCreateImport.update({
+  id: '/admin/workspace/create',
+  path: '/admin/workspace/create',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthAdminWorkspaceIdIndexRoute = AuthAdminWorkspaceIdIndexImport.update({
+  id: '/admin/workspace/$id/',
+  path: '/admin/workspace/$id/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthAdminWorkspaceIdEditRoute = AuthAdminWorkspaceIdEditImport.update({
+  id: '/admin/workspace/$id/edit',
+  path: '/admin/workspace/$id/edit',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -122,11 +164,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthHomeImport
       parentRoute: typeof AuthImport
     }
-    '/_auth/workspace/$id': {
-      id: '/_auth/workspace/$id'
+    '/_auth/user/settings': {
+      id: '/_auth/user/settings'
+      path: '/user/settings'
+      fullPath: '/user/settings'
+      preLoaderRoute: typeof AuthUserSettingsImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/user/': {
+      id: '/_auth/user/'
+      path: '/user'
+      fullPath: '/user'
+      preLoaderRoute: typeof AuthUserIndexImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/admin/workspace/create': {
+      id: '/_auth/admin/workspace/create'
+      path: '/admin/workspace/create'
+      fullPath: '/admin/workspace/create'
+      preLoaderRoute: typeof AuthAdminWorkspaceCreateImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/workspace/$id/book': {
+      id: '/_auth/workspace/$id/book'
+      path: '/workspace/$id/book'
+      fullPath: '/workspace/$id/book'
+      preLoaderRoute: typeof AuthWorkspaceIdBookImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/workspace/$id/': {
+      id: '/_auth/workspace/$id/'
       path: '/workspace/$id'
       fullPath: '/workspace/$id'
-      preLoaderRoute: typeof AuthWorkspaceIdImport
+      preLoaderRoute: typeof AuthWorkspaceIdIndexImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/admin/workspace/$id/edit': {
+      id: '/_auth/admin/workspace/$id/edit'
+      path: '/admin/workspace/$id/edit'
+      fullPath: '/admin/workspace/$id/edit'
+      preLoaderRoute: typeof AuthAdminWorkspaceIdEditImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/admin/workspace/$id/': {
+      id: '/_auth/admin/workspace/$id/'
+      path: '/admin/workspace/$id'
+      fullPath: '/admin/workspace/$id'
+      preLoaderRoute: typeof AuthAdminWorkspaceIdIndexImport
       parentRoute: typeof AuthImport
     }
   }
@@ -137,13 +221,25 @@ declare module '@tanstack/react-router' {
 interface AuthRouteChildren {
   AuthCreateRoute: typeof AuthCreateRoute
   AuthHomeRoute: typeof AuthHomeRoute
-  AuthWorkspaceIdRoute: typeof AuthWorkspaceIdRoute
+  AuthUserSettingsRoute: typeof AuthUserSettingsRoute
+  AuthUserIndexRoute: typeof AuthUserIndexRoute
+  AuthAdminWorkspaceCreateRoute: typeof AuthAdminWorkspaceCreateRoute
+  AuthWorkspaceIdBookRoute: typeof AuthWorkspaceIdBookRoute
+  AuthWorkspaceIdIndexRoute: typeof AuthWorkspaceIdIndexRoute
+  AuthAdminWorkspaceIdEditRoute: typeof AuthAdminWorkspaceIdEditRoute
+  AuthAdminWorkspaceIdIndexRoute: typeof AuthAdminWorkspaceIdIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthCreateRoute: AuthCreateRoute,
   AuthHomeRoute: AuthHomeRoute,
-  AuthWorkspaceIdRoute: AuthWorkspaceIdRoute,
+  AuthUserSettingsRoute: AuthUserSettingsRoute,
+  AuthUserIndexRoute: AuthUserIndexRoute,
+  AuthAdminWorkspaceCreateRoute: AuthAdminWorkspaceCreateRoute,
+  AuthWorkspaceIdBookRoute: AuthWorkspaceIdBookRoute,
+  AuthWorkspaceIdIndexRoute: AuthWorkspaceIdIndexRoute,
+  AuthAdminWorkspaceIdEditRoute: AuthAdminWorkspaceIdEditRoute,
+  AuthAdminWorkspaceIdIndexRoute: AuthAdminWorkspaceIdIndexRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
@@ -156,7 +252,13 @@ export interface FileRoutesByFullPath {
   '/test': typeof TestRoute
   '/create': typeof AuthCreateRoute
   '/home': typeof AuthHomeRoute
-  '/workspace/$id': typeof AuthWorkspaceIdRoute
+  '/user/settings': typeof AuthUserSettingsRoute
+  '/user': typeof AuthUserIndexRoute
+  '/admin/workspace/create': typeof AuthAdminWorkspaceCreateRoute
+  '/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
+  '/workspace/$id': typeof AuthWorkspaceIdIndexRoute
+  '/admin/workspace/$id/edit': typeof AuthAdminWorkspaceIdEditRoute
+  '/admin/workspace/$id': typeof AuthAdminWorkspaceIdIndexRoute
 }
 
 export interface FileRoutesByTo {
@@ -167,7 +269,13 @@ export interface FileRoutesByTo {
   '/test': typeof TestRoute
   '/create': typeof AuthCreateRoute
   '/home': typeof AuthHomeRoute
-  '/workspace/$id': typeof AuthWorkspaceIdRoute
+  '/user/settings': typeof AuthUserSettingsRoute
+  '/user': typeof AuthUserIndexRoute
+  '/admin/workspace/create': typeof AuthAdminWorkspaceCreateRoute
+  '/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
+  '/workspace/$id': typeof AuthWorkspaceIdIndexRoute
+  '/admin/workspace/$id/edit': typeof AuthAdminWorkspaceIdEditRoute
+  '/admin/workspace/$id': typeof AuthAdminWorkspaceIdIndexRoute
 }
 
 export interface FileRoutesById {
@@ -179,7 +287,13 @@ export interface FileRoutesById {
   '/test': typeof TestRoute
   '/_auth/create': typeof AuthCreateRoute
   '/_auth/home': typeof AuthHomeRoute
-  '/_auth/workspace/$id': typeof AuthWorkspaceIdRoute
+  '/_auth/user/settings': typeof AuthUserSettingsRoute
+  '/_auth/user/': typeof AuthUserIndexRoute
+  '/_auth/admin/workspace/create': typeof AuthAdminWorkspaceCreateRoute
+  '/_auth/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
+  '/_auth/workspace/$id/': typeof AuthWorkspaceIdIndexRoute
+  '/_auth/admin/workspace/$id/edit': typeof AuthAdminWorkspaceIdEditRoute
+  '/_auth/admin/workspace/$id/': typeof AuthAdminWorkspaceIdIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -192,7 +306,13 @@ export interface FileRouteTypes {
     | '/test'
     | '/create'
     | '/home'
+    | '/user/settings'
+    | '/user'
+    | '/admin/workspace/create'
+    | '/workspace/$id/book'
     | '/workspace/$id'
+    | '/admin/workspace/$id/edit'
+    | '/admin/workspace/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -202,7 +322,13 @@ export interface FileRouteTypes {
     | '/test'
     | '/create'
     | '/home'
+    | '/user/settings'
+    | '/user'
+    | '/admin/workspace/create'
+    | '/workspace/$id/book'
     | '/workspace/$id'
+    | '/admin/workspace/$id/edit'
+    | '/admin/workspace/$id'
   id:
     | '__root__'
     | '/'
@@ -212,7 +338,13 @@ export interface FileRouteTypes {
     | '/test'
     | '/_auth/create'
     | '/_auth/home'
-    | '/_auth/workspace/$id'
+    | '/_auth/user/settings'
+    | '/_auth/user/'
+    | '/_auth/admin/workspace/create'
+    | '/_auth/workspace/$id/book'
+    | '/_auth/workspace/$id/'
+    | '/_auth/admin/workspace/$id/edit'
+    | '/_auth/admin/workspace/$id/'
   fileRoutesById: FileRoutesById
 }
 
@@ -257,7 +389,13 @@ export const routeTree = rootRoute
       "children": [
         "/_auth/create",
         "/_auth/home",
-        "/_auth/workspace/$id"
+        "/_auth/user/settings",
+        "/_auth/user/",
+        "/_auth/admin/workspace/create",
+        "/_auth/workspace/$id/book",
+        "/_auth/workspace/$id/",
+        "/_auth/admin/workspace/$id/edit",
+        "/_auth/admin/workspace/$id/"
       ]
     },
     "/login": {
@@ -277,8 +415,32 @@ export const routeTree = rootRoute
       "filePath": "_auth/home.tsx",
       "parent": "/_auth"
     },
-    "/_auth/workspace/$id": {
-      "filePath": "_auth/workspace/$id.tsx",
+    "/_auth/user/settings": {
+      "filePath": "_auth/user/settings.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/user/": {
+      "filePath": "_auth/user/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/admin/workspace/create": {
+      "filePath": "_auth/admin/workspace/create.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/workspace/$id/book": {
+      "filePath": "_auth/workspace/$id/book.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/workspace/$id/": {
+      "filePath": "_auth/workspace/$id/index.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/admin/workspace/$id/edit": {
+      "filePath": "_auth/admin/workspace/$id/edit.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/admin/workspace/$id/": {
+      "filePath": "_auth/admin/workspace/$id/index.tsx",
       "parent": "/_auth"
     }
   }

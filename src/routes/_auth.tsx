@@ -1,7 +1,6 @@
 import { createFileRoute, Outlet, redirect } from "@tanstack/react-router";
 import { isAuthenticated } from "../util/client.ts";
-
-import { BaseLayout } from "../components/layout/BaseLayout.tsx";
+import { BareBonesLayout } from "../components/layout/BareBonesLayout.tsx";
 
 export const Route = createFileRoute("/_auth")({
   component: RouteComponent,
@@ -13,10 +12,9 @@ export const Route = createFileRoute("/_auth")({
 });
 
 function RouteComponent() {
-  // const navigate = useNavigate();
   return (
-    <BaseLayout>
+    <BareBonesLayout>
       <Outlet />
-    </BaseLayout>
+    </BareBonesLayout>
   );
 }
