@@ -14,6 +14,7 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as TestImport } from './routes/test'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
+import { Route as BookingsImport } from './routes/bookings'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthHomeImport } from './routes/_auth/home'
@@ -43,6 +44,12 @@ const RegisterRoute = RegisterImport.update({
 const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BookingsRoute = BookingsImport.update({
+  id: '/bookings',
+  path: '/bookings',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -127,6 +134,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/bookings': {
+      id: '/bookings'
+      path: '/bookings'
+      fullPath: '/bookings'
+      preLoaderRoute: typeof BookingsImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -247,6 +261,7 @@ const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
+  '/bookings': typeof BookingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
@@ -264,6 +279,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '': typeof AuthRouteWithChildren
+  '/bookings': typeof BookingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
@@ -282,6 +298,7 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
+  '/bookings': typeof BookingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
@@ -301,6 +318,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
+    | '/bookings'
     | '/login'
     | '/register'
     | '/test'
@@ -317,6 +335,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | ''
+    | '/bookings'
     | '/login'
     | '/register'
     | '/test'
@@ -333,6 +352,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_auth'
+    | '/bookings'
     | '/login'
     | '/register'
     | '/test'
@@ -351,6 +371,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
+  BookingsRoute: typeof BookingsRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   TestRoute: typeof TestRoute
@@ -359,6 +380,7 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
+  BookingsRoute: BookingsRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   TestRoute: TestRoute,
@@ -376,6 +398,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_auth",
+        "/bookings",
         "/login",
         "/register",
         "/test"
@@ -397,6 +420,9 @@ export const routeTree = rootRoute
         "/_auth/admin/workspace/$id/edit",
         "/_auth/admin/workspace/$id/"
       ]
+    },
+    "/bookings": {
+      "filePath": "bookings.tsx"
     },
     "/login": {
       "filePath": "login.tsx"
