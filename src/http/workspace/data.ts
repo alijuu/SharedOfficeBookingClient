@@ -1,7 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import { apiClient, queryClient } from "../../util/client.ts";
 import { createQueryHook } from "../../util/queryClientHelper.ts";
-import { WorkspacesResponse } from "../../resources/workspaces/model.ts";
+import {
+  WorkspaceResponse,
+  WorkspacesResponse,
+} from "../../resources/workspaces/model.ts";
 
 export interface CreateWorkspaceDto {
   name: string;
@@ -10,8 +13,15 @@ export interface CreateWorkspaceDto {
   phone: string;
   imageUrl: string;
   description: string;
-  floorPlan: number[][]; // 2D array of numbers representing the floor layout
+  floorPlan: number[][];
 }
+export interface CreateBooking {
+  userId: string;
+  deskId: number;
+  type: string;
+  startTime: string;
+}
+
 export function useCreateWorkspace() {
   return useMutation({
     mutationFn: async (data: CreateWorkspaceDto) => {
@@ -25,7 +35,7 @@ export function useCreateWorkspace() {
 }
 
 export const useGetAllWorkspaces = createQueryHook<WorkspacesResponse>({
-  queryKey: ["workspace"],
+  queryKey: ["workspaces"],
   queryFn: async () => {
     const { data } = await apiClient.request({
       method: "GET",
@@ -34,3 +44,28 @@ export const useGetAllWorkspaces = createQueryHook<WorkspacesResponse>({
     return data;
   },
 });
+
+export const useGetWorkspace = createQueryHook<
+  WorkspaceResponse,
+  { id: string }
+>(({ id }) => ({
+  queryKey: ["workspace", id],
+  queryFn: async () => {
+    const { data } = await apiClient.request({
+      method: "GET",
+      url: `/api/workspaces/get/${id}`,
+    });
+    return data;
+  },
+  enabled: !!id,
+}));
+
+export function useCreateBooking() {
+  return useMutation({
+    mutationFn: async (data: CreateBooking) => {
+      const response = await apiClient.post("/api/booking", data);
+      return response.data;
+    },
+  });
+}
+// export const useGetBookingDest = createQueryHook<>();

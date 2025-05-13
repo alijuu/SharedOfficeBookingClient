@@ -1,31 +1,10 @@
 import React from "react";
-import {
-  AppBar,
-  Toolbar,
-  Typography,
-  Container,
-  Box,
-  Button,
-  TextField,
-  Menu,
-  IconButton,
-  InputAdornment,
-  MenuItem,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import MenuIcon from "@mui/icons-material/Menu";
+import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 import ProfileMenu from "../profile/ProfileMenu.tsx";
+
 export function BaseLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   return (
     <Box
@@ -34,63 +13,81 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
       minHeight="100vh"
       bgcolor="#f7fafa"
     >
-      {/* Header */}
       <AppBar
         position="static"
         elevation={0}
-        sx={{ bgcolor: "white", color: "black" }}
+        sx={{ bgcolor: "white", color: "black", width: "100%" }}
       >
         <Toolbar
-          sx={{ justifyContent: "space-between", gap: 2, flexWrap: "wrap" }}
+          sx={{
+            justifyContent: "space-between",
+            gap: 2,
+            flexWrap: "wrap",
+            px: { xs: 2, md: 4 },
+            py: 1.5,
+          }}
         >
-          {/* Logo */}
-          <Typography variant="h6" component="div" sx={{ fontWeight: 600 }}>
+          {/* Logo / Title */}
+          <Typography
+            variant="h6"
+            component="div"
+            onClick={() => navigate({ to: "/home" })}
+            sx={{
+              fontWeight: 600,
+              transition: "transform 0.2s ease",
+              "&:hover": {
+                cursor: "pointer",
+                transform: "scale(1.05)",
+              },
+            }}
+          >
             Office Booking
           </Typography>
-          {/* Search */}
-          <TextField
-            placeholder="Search for an office"
-            variant="outlined"
-            size="small"
-            sx={{ minWidth: 240, bgcolor: "#f1f3f5", borderRadius: 2 }}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <SearchIcon />
-                </InputAdornment>
-              ),
-            }}
-          />
 
-          {/* Desktop Menu */}
-          <Box sx={{ display: { xs: "none", md: "flex" }, gap: 2 }}>
-            <Button
-              color="inherit"
-              onClick={async () => {
-                await navigate({ to: "/create" });
-              }}
-            >
-              Create Workspace
-            </Button>
+          {/* Optional: Nav Links or Actions */}
+          <Box
+            sx={{
+              display: { xs: "none", md: "flex" },
+              alignItems: "center",
+              gap: 3,
+            }}
+          >
+            {/* Example placeholder nav links */}
+            <Typography variant="body1" sx={{ cursor: "pointer" }}>
+              Bookings
+            </Typography>
+            <Typography variant="body1" sx={{ cursor: "pointer" }}>
+              FAQ
+            </Typography>
             <ProfileMenu />
           </Box>
-          {/* Mobile Menu Icon */}
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
-            <IconButton onClick={handleMenuClick}>
-              <MenuIcon />
-            </IconButton>
-            <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-              <MenuItem onClick={handleClose}>Contact</MenuItem>
-              <MenuItem onClick={handleClose}>For Businesses</MenuItem>
-            </Menu>
+
+          <Box
+            sx={{
+              display: { xs: "flex", md: "none" },
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            <ProfileMenu />
           </Box>
         </Toolbar>
       </AppBar>
 
       {/* Main Content */}
-      <Container sx={{ my: 4, flex: 1, position: "relative" }}>
+      <Box
+        sx={{
+          my: 4,
+          flex: 1,
+          position: "relative",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
         {children}
-      </Container>
+      </Box>
 
       {/* Footer */}
       <Box

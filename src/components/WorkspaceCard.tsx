@@ -25,8 +25,10 @@ const WorkspaceCard = ({
   return (
     <Card
       sx={{
-        width: 345,
-        m: 2,
+        minWidth: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
       <CardMedia component="img" height="160" image={imageUrl} alt={name} />
