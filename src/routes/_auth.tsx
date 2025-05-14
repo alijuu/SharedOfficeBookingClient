@@ -13,8 +13,8 @@ export const Route = createFileRoute("/_auth")({
 
 function RouteComponent() {
   return (
-    <BaseLayout>
-      <Outlet />
-    </BaseLayout>
+      <BaseLayout>
+        <Outlet />
+      </BaseLayout>
   );
 }

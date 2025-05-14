@@ -39,3 +39,20 @@
 //     </Box>
 //   );
 // }
+import { ReactNode } from "react";
+
+interface HomeLayoutProps {
+    children?: ReactNode;
+}
+
+const HomeLayout = ({ children }: HomeLayoutProps) => {
+    return (
+        <div>
+            <h1>This is the Home Layout</h1>
+            <div>{children}</div>
+        </div>
+    );
+};
+
+export default HomeLayout;
+
