@@ -5,6 +5,7 @@ import {
   WorkspaceResponse,
   WorkspacesResponse,
 } from "../../resources/workspaces/model.ts";
+import { useNotification } from "../../context/notifications/useNotifications.ts";
 
 export interface CreateWorkspaceDto {
   name: string;
@@ -17,12 +18,14 @@ export interface CreateWorkspaceDto {
 }
 export interface CreateBooking {
   userId: string;
-  deskId: number;
-  type: string;
+  deskId: string;
+  type: number;
   startTime: string;
+  endTime: string;
 }
 
 export function useCreateWorkspace() {
+  const { open } = useNotification();
   return useMutation({
     mutationFn: async (data: CreateWorkspaceDto) => {
       const response = await apiClient.post("/api/workspaces/create", data);
@@ -30,6 +33,10 @@ export function useCreateWorkspace() {
     },
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ["workspace"] });
+      open("Workspace created successfully!", "success");
+    },
+    onError: () => {
+      open("Workspace creation failed.", "error");
     },
   });
 }
@@ -61,11 +68,36 @@ export const useGetWorkspace = createQueryHook<
 }));
 
 export function useCreateBooking() {
+  const { open } = useNotification();
   return useMutation({
     mutationFn: async (data: CreateBooking) => {
       const response = await apiClient.post("/api/booking", data);
       return response.data;
     },
+    onSuccess: async () => {
+      open("Booking successful!", "success");
+    },
+    onError: async () => {
+      open("Booking failed.", "error");
+    },
   });
 }
+
+export function useDeleteWorkspace() {
+  const { open } = useNotification();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const response = await apiClient.delete(`/api/workspaces/delete/${id}`);
+      return response.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["workspaces"] });
+      open("Workspace deleted successfully!", "success");
+    },
+    onError: () => {
+      open("Workspace deletion failed.", "error");
+    },
+  });
+}
+
 // export const useGetBookingDest = createQueryHook<>();

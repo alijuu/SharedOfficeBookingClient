@@ -1,64 +1,74 @@
 import {
-    Card,
-    CardMedia,
-    CardContent,
-    Typography,
-    Button,
-    CardActions,
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Button,
+  CardActions,
 } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 
 type WorkspaceCardProps = {
-    id: string;
-    name: string;
-    address: string;
-    description: string;
-    imageUrl: string;
-    onViewDetails?: () => void;
+  name: string;
+  address: string;
+  description: string;
+  imageUrl: string;
+  id: string;
 };
 
-const WorkspaceCard = ({ id, name, address, description, imageUrl, onViewDetails }: WorkspaceCardProps) => {
-    const navigate = useNavigate();
+const WorkspaceCard = ({
+  name,
+  address,
+  description,
+  imageUrl,
+  id,
+}: WorkspaceCardProps) => {
+  const navigate = useNavigate();
+  const onViewDetails = () => {
+    navigate({
+      to: "/workspace/$id",
+      params: { id: id },
+    });
+  };
 
-    const handleViewDetails = () => {
-        if (onViewDetails) {
-            onViewDetails();
-        } else {
-            navigate({ to: `workspace/${id}` });
-        }
-    };
-
-    return (
-        <Card sx={{ width: 345, m: 2 }}>
-            <CardMedia component="img" height="160" image={imageUrl} alt={name} />
-            <CardContent>
-                <Typography variant="h6" gutterBottom>
-                    {name}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                    {address}
-                </Typography>
-                <Typography
-                    variant="body2"
-                    sx={{
-                        mt: 1,
-                        display: "-webkit-box",
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: "vertical",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                    }}
-                >
-                    {description}
-                </Typography>
-            </CardContent>
-            <CardActions>
-                <Button size="small" variant="outlined" onClick={handleViewDetails}>
-                    View Details
-                </Button>
-            </CardActions>
-        </Card>
-    );
+  return (
+    <Card
+      sx={{
+        minWidth: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+      }}
+    >
+      <CardMedia component="img" height="160" image={imageUrl} alt={name} />
+      <CardContent>
+        <Typography variant="h6" gutterBottom>
+          {name}
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
+          {address}
+        </Typography>
+        <Typography
+          variant="body2"
+          sx={{
+            mt: 1,
+            display: "-webkit-box",
+            WebkitLineClamp: 2,
+            WebkitBoxOrient: "vertical",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+          }}
+        >
+          {description}
+        </Typography>
+      </CardContent>
+      <CardActions>
+        <Button size="small" variant="outlined" onClick={onViewDetails}>
+          View Details
+        </Button>
+      </CardActions>
+    </Card>
+  );
 };
 
 export default WorkspaceCard;

@@ -26,11 +26,13 @@ export const authProvider = {
       //     queryKey: ['auth', 'identity'],
       //     queryFn: () => authProvider.getIdentity(),
       // })
-      // username = undefined;
+      const identity = await authProvider.getIdentity();
+      console.log(identity);
       prevPassword = undefined;
-      // prevRemember = undefined
+
       return {
         success: true,
+        user: identity,
       };
     } catch (error) {
       const appError = error as ApplicationHttpError<unknown, unknown>;
@@ -65,8 +67,8 @@ export const authProvider = {
       };
     }
   },
-  // getIdentity: async (): Promise<Al> => {
-  //     const response = await apiClient.get<l>('/admin/auth/info')
-  //     return response.data
-  // },
+  getIdentity: async () => {
+    const response = await apiClient.get("/user");
+    return response.data;
+  },
 };

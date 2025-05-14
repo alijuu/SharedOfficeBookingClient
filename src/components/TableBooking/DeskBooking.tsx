@@ -1,12 +1,12 @@
 import { Autocomplete, Box, TextField, Typography } from "@mui/material";
 import { DeskBook } from "../../resources/desk/DeskBook.tsx";
 
-export interface Desk {
+export type Desk = {
   row: number;
   col: number;
   id: number;
   status: DeskStatus;
-}
+} | null;
 
 type DeskBookingProps = {
   grid: Desk[][];
@@ -14,12 +14,12 @@ type DeskBookingProps = {
 };
 
 export type DeskStatus = "available" | "out of order";
-
-export interface Desk {
-  row: number;
-  col: number;
-  status: DeskStatus;
-}
+//
+// export interface Desk {
+//   row: number;
+//   col: number;
+//   status: DeskStatus;
+// }
 
 export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
   if (!grid || grid.length === 0 || !grid[0]) {
@@ -27,20 +27,21 @@ export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
   }
 
   return (
-    <Box sx={{ p: 4 }}>
+    <Box sx={{}}>
       <Autocomplete
         disablePortal
         options={["1"]}
         defaultValue={"1"}
         disableClearable
+        disabled={true}
         sx={{ width: 100, marginBottom: 2 }}
         renderInput={(params) => <TextField {...params} label="Floor" />}
       />
 
       <Box
         display="grid"
-        gridTemplateColumns={`repeat(${grid[0].length}, minmax(80px, 5vw))`}
-        gridTemplateRows={`repeat(${grid.length}, minmax(80px, 100px))`}
+        gridTemplateColumns={`repeat(${grid[0].length}, minmax(40px, 4vw))`}
+        gridTemplateRows={`repeat(${grid.length}, minmax(40px, 50px))`}
         gap={2}
         justifyContent="flex-start"
         borderRadius={2}

@@ -15,7 +15,7 @@ function RouteComponent() {
   const { id } = Route.useParams();
   const { data } = useGetWorkspace({ id: id });
 
-  const grid: Desk[][] = data?.data.floorPlan.map((row, rowIdx) =>
+  const grid: Desk[][] = (data?.data.floorPlan ?? []).map((row, rowIdx) =>
     row.map((val, colIdx) => {
       if (val !== 0) {
         return {
@@ -25,7 +25,7 @@ function RouteComponent() {
           status: "available",
         };
       } else {
-        return null; // Empty space (no desk)
+        return null;
       }
     }),
   );

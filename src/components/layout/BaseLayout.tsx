@@ -1,11 +1,13 @@
-import React from "react";
+import React, { useContext } from "react";
 import { AppBar, Toolbar, Typography, Box } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 import ProfileMenu from "../profile/ProfileMenu.tsx";
+import { AuthContext } from "../../context/auth/AuthContext.ts";
 
 export function BaseLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
-
+  const auth = useContext(AuthContext);
+  console.log(auth);
   return (
     <Box
       display="flex"
@@ -53,12 +55,36 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
             }}
           >
             {/* Example placeholder nav links */}
-            <Typography variant="body1" sx={{ cursor: "pointer" }}>
+            <Typography
+              variant="body1"
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                navigate({ to: "/home" });
+              }}
+            >
               Bookings
             </Typography>
-            <Typography variant="body1" sx={{ cursor: "pointer" }}>
+            <Typography
+              variant="body1"
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                navigate({ to: "/faq" });
+              }}
+            >
               FAQ
             </Typography>
+            {auth?.user?.roles.includes("User") && (
+              <Typography
+                variant="body1"
+                sx={{ cursor: "pointer" }}
+                onClick={() => {
+                  navigate({ to: "/admin" });
+                }}
+              >
+                ADMIN
+              </Typography>
+            )}
+
             <ProfileMenu />
           </Box>
 
