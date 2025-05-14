@@ -1,9 +1,6 @@
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
+import WorkspaceDetails from "../../../../components/WorkspaceDetails.tsx";
 
-export const Route = createFileRoute('/_auth/workspace/$id/')({
-  component: RouteComponent,
-})
-
-function RouteComponent() {
-  return <div>Hello "/_auth/workspace/$id/"!</div>
-}
+export const Route = createFileRoute("/_auth/workspace/$id/")({
+  component: WorkspaceDetails,
+});

@@ -4,20 +4,31 @@ import { Typography, Box } from "@mui/material";
 export function BareBonesLayout({ children }: { children: React.ReactNode }) {
   return (
     <Box
+      height="100vh"
       display="flex"
       flexDirection="column"
-      minHeight="100vh"
       bgcolor="#f7fafa"
       width="100%"
     >
-      <Box>{children}</Box>
+      {/* Content Section */}
+      <Box
+        sx={{
+          my: 4,
+          flex: 1,
+          display: "flex",
+        }}
+      >
+        {children}
+      </Box>
+
+      {/* Footer Section */}
       <Box
         component="footer"
         sx={{
           py: 2,
           textAlign: "center",
           bgcolor: "grey.200",
-          mt: "auto",
+          mt: "auto", // Pushes footer to the bottom
         }}
       >
         <Typography variant="body2" color="text.secondary">

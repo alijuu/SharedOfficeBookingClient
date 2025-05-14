@@ -48,8 +48,8 @@ function CreateWorkspace() {
     setValue("floorPlan", floorPlan);
   };
   return (
-    <Box>
-      <Box sx={{ maxWidth: 600, mx: "auto", mt: 4 }}>
+    <Box sx={{ width: "100%" }}>
+      <Box sx={{ width: "80%", mt: 4, mx: "auto" }}>
         <Typography variant="h5" gutterBottom>
           Create New Workspace
         </Typography>

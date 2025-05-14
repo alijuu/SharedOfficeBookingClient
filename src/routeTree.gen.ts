@@ -17,8 +17,10 @@ import { Route as LoginImport } from './routes/login'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthHomeImport } from './routes/_auth/home'
+import { Route as AuthFaqImport } from './routes/_auth/faq'
 import { Route as AuthCreateImport } from './routes/_auth/create'
 import { Route as AuthUserIndexImport } from './routes/_auth/user/index'
+import { Route as AuthAdminIndexImport } from './routes/_auth/admin/index'
 import { Route as AuthUserSettingsImport } from './routes/_auth/user/settings'
 import { Route as AuthWorkspaceIdIndexImport } from './routes/_auth/workspace/$id/index'
 import { Route as AuthWorkspaceIdBookImport } from './routes/_auth/workspace/$id/book'
@@ -63,6 +65,12 @@ const AuthHomeRoute = AuthHomeImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
+const AuthFaqRoute = AuthFaqImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => AuthRoute,
+} as any)
+
 const AuthCreateRoute = AuthCreateImport.update({
   id: '/create',
   path: '/create',
@@ -72,6 +80,12 @@ const AuthCreateRoute = AuthCreateImport.update({
 const AuthUserIndexRoute = AuthUserIndexImport.update({
   id: '/user/',
   path: '/user/',
+  getParentRoute: () => AuthRoute,
+} as any)
+
+const AuthAdminIndexRoute = AuthAdminIndexImport.update({
+  id: '/admin/',
+  path: '/admin/',
   getParentRoute: () => AuthRoute,
 } as any)
 
@@ -157,6 +171,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCreateImport
       parentRoute: typeof AuthImport
     }
+    '/_auth/faq': {
+      id: '/_auth/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof AuthFaqImport
+      parentRoute: typeof AuthImport
+    }
     '/_auth/home': {
       id: '/_auth/home'
       path: '/home'
@@ -169,6 +190,13 @@ declare module '@tanstack/react-router' {
       path: '/user/settings'
       fullPath: '/user/settings'
       preLoaderRoute: typeof AuthUserSettingsImport
+      parentRoute: typeof AuthImport
+    }
+    '/_auth/admin/': {
+      id: '/_auth/admin/'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthAdminIndexImport
       parentRoute: typeof AuthImport
     }
     '/_auth/user/': {
@@ -220,8 +248,10 @@ declare module '@tanstack/react-router' {
 
 interface AuthRouteChildren {
   AuthCreateRoute: typeof AuthCreateRoute
+  AuthFaqRoute: typeof AuthFaqRoute
   AuthHomeRoute: typeof AuthHomeRoute
   AuthUserSettingsRoute: typeof AuthUserSettingsRoute
+  AuthAdminIndexRoute: typeof AuthAdminIndexRoute
   AuthUserIndexRoute: typeof AuthUserIndexRoute
   AuthAdminWorkspaceCreateRoute: typeof AuthAdminWorkspaceCreateRoute
   AuthWorkspaceIdBookRoute: typeof AuthWorkspaceIdBookRoute
@@ -232,8 +262,10 @@ interface AuthRouteChildren {
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthCreateRoute: AuthCreateRoute,
+  AuthFaqRoute: AuthFaqRoute,
   AuthHomeRoute: AuthHomeRoute,
   AuthUserSettingsRoute: AuthUserSettingsRoute,
+  AuthAdminIndexRoute: AuthAdminIndexRoute,
   AuthUserIndexRoute: AuthUserIndexRoute,
   AuthAdminWorkspaceCreateRoute: AuthAdminWorkspaceCreateRoute,
   AuthWorkspaceIdBookRoute: AuthWorkspaceIdBookRoute,
@@ -251,8 +283,10 @@ export interface FileRoutesByFullPath {
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/create': typeof AuthCreateRoute
+  '/faq': typeof AuthFaqRoute
   '/home': typeof AuthHomeRoute
   '/user/settings': typeof AuthUserSettingsRoute
+  '/admin': typeof AuthAdminIndexRoute
   '/user': typeof AuthUserIndexRoute
   '/admin/workspace/create': typeof AuthAdminWorkspaceCreateRoute
   '/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
@@ -268,8 +302,10 @@ export interface FileRoutesByTo {
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/create': typeof AuthCreateRoute
+  '/faq': typeof AuthFaqRoute
   '/home': typeof AuthHomeRoute
   '/user/settings': typeof AuthUserSettingsRoute
+  '/admin': typeof AuthAdminIndexRoute
   '/user': typeof AuthUserIndexRoute
   '/admin/workspace/create': typeof AuthAdminWorkspaceCreateRoute
   '/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
@@ -286,8 +322,10 @@ export interface FileRoutesById {
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/_auth/create': typeof AuthCreateRoute
+  '/_auth/faq': typeof AuthFaqRoute
   '/_auth/home': typeof AuthHomeRoute
   '/_auth/user/settings': typeof AuthUserSettingsRoute
+  '/_auth/admin/': typeof AuthAdminIndexRoute
   '/_auth/user/': typeof AuthUserIndexRoute
   '/_auth/admin/workspace/create': typeof AuthAdminWorkspaceCreateRoute
   '/_auth/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
@@ -305,8 +343,10 @@ export interface FileRouteTypes {
     | '/register'
     | '/test'
     | '/create'
+    | '/faq'
     | '/home'
     | '/user/settings'
+    | '/admin'
     | '/user'
     | '/admin/workspace/create'
     | '/workspace/$id/book'
@@ -321,8 +361,10 @@ export interface FileRouteTypes {
     | '/register'
     | '/test'
     | '/create'
+    | '/faq'
     | '/home'
     | '/user/settings'
+    | '/admin'
     | '/user'
     | '/admin/workspace/create'
     | '/workspace/$id/book'
@@ -337,8 +379,10 @@ export interface FileRouteTypes {
     | '/register'
     | '/test'
     | '/_auth/create'
+    | '/_auth/faq'
     | '/_auth/home'
     | '/_auth/user/settings'
+    | '/_auth/admin/'
     | '/_auth/user/'
     | '/_auth/admin/workspace/create'
     | '/_auth/workspace/$id/book'
@@ -388,8 +432,10 @@ export const routeTree = rootRoute
       "filePath": "_auth.tsx",
       "children": [
         "/_auth/create",
+        "/_auth/faq",
         "/_auth/home",
         "/_auth/user/settings",
+        "/_auth/admin/",
         "/_auth/user/",
         "/_auth/admin/workspace/create",
         "/_auth/workspace/$id/book",
@@ -411,12 +457,20 @@ export const routeTree = rootRoute
       "filePath": "_auth/create.tsx",
       "parent": "/_auth"
     },
+    "/_auth/faq": {
+      "filePath": "_auth/faq.tsx",
+      "parent": "/_auth"
+    },
     "/_auth/home": {
       "filePath": "_auth/home.tsx",
       "parent": "/_auth"
     },
     "/_auth/user/settings": {
       "filePath": "_auth/user/settings.tsx",
+      "parent": "/_auth"
+    },
+    "/_auth/admin/": {
+      "filePath": "_auth/admin/index.tsx",
       "parent": "/_auth"
     },
     "/_auth/user/": {

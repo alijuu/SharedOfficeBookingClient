@@ -14,3 +14,7 @@ export interface WorkspacesResponse {
   pageSize: number;
   totalCount: number;
 }
+
+export interface WorkspaceResponse {
+  data: Workspace;
+}

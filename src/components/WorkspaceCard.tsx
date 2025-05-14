@@ -6,13 +6,14 @@ import {
   Button,
   CardActions,
 } from "@mui/material";
+import { useNavigate } from "@tanstack/react-router";
 
 type WorkspaceCardProps = {
   name: string;
   address: string;
   description: string;
   imageUrl: string;
-  onViewDetails?: () => void;
+  id: string;
 };
 
 const WorkspaceCard = ({
@@ -20,13 +21,23 @@ const WorkspaceCard = ({
   address,
   description,
   imageUrl,
-  onViewDetails,
+  id,
 }: WorkspaceCardProps) => {
+  const navigate = useNavigate();
+  const onViewDetails = () => {
+    navigate({
+      to: "/workspace/$id",
+      params: { id: id },
+    });
+  };
+
   return (
     <Card
       sx={{
-        width: 345,
-        m: 2,
+        minWidth: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
     >
       <CardMedia component="img" height="160" image={imageUrl} alt={name} />
