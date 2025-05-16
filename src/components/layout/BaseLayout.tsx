@@ -73,7 +73,7 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
             >
               FAQ
             </Typography>
-            {auth?.user?.roles.includes("User") && (
+            {auth?.user?.roles.includes("Admin") && (
               <Typography
                 variant="body1"
                 sx={{ cursor: "pointer" }}

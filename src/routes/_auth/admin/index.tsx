@@ -94,7 +94,12 @@ function RouteComponent() {
                       mt: 1,
                     }}
                   >
-                    <Button fullWidth variant="contained" color="primary">
+                    <Button
+                      disabled={true}
+                      fullWidth
+                      variant="contained"
+                      color="info"
+                    >
                       Edit
                     </Button>
                     <Button

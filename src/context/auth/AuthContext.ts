@@ -2,7 +2,7 @@ import * as React from "react";
 
 export interface AuthContext {
   isAuthenticated: boolean;
-  login: (username: AuthUser) => Promise<void>;
+  login: (auth: AuthUser) => Promise<void>;
   logout: () => Promise<void>;
   user: AuthUser | null;
 }
