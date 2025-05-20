@@ -8,11 +8,11 @@ import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import type { QueryClient } from "@tanstack/react-query";
 import { CircularProgress } from "@mui/material";
 import { AuthContext } from "../context/auth/AuthContext.ts";
-import { BareBonesLayout } from "../components/layout/BareBonesLayout.tsx";
 import NotFound from "../components/NotFound/NotFound.tsx";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { useEffect } from "react";
+import { BaseLayout } from "../components/Layout/BaseLayout.tsx";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
@@ -22,9 +22,9 @@ export const Route = createRootRouteWithContext<{
   pendingComponent: () => <CircularProgress color="inherit" />,
   notFoundComponent: () => {
     return (
-      <BareBonesLayout>
+      <BaseLayout>
         <NotFound />
-      </BareBonesLayout>
+      </BaseLayout>
     );
   },
 });
