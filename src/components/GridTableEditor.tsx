@@ -21,7 +21,7 @@ export function GridTableEditor({
   const [grid, setGrid] = useState<number[][]>([]);
   const [markMode, setMarkMode] = useState<boolean>(false);
   const [wallMarkMode, setWallMarkMode] = useState<boolean>(false);
-
+  console.log(initialGrid);
   // Create initial grid with outer walls
   useEffect(() => {
     if (initialGrid && initialGrid.length > 0) {
@@ -48,8 +48,8 @@ export function GridTableEditor({
         Array(cols)
           .fill(null)
           .map((_, c) =>
-            r === 0 || r === rows - 1 || c === 0 || c === cols - 1 ? -1 : 0
-          )
+            r === 0 || r === rows - 1 || c === 0 || c === cols - 1 ? -1 : 0,
+          ),
       );
     setGrid(newGrid);
   };
@@ -165,7 +165,7 @@ export function GridTableEditor({
         {grid.map((row, rowIdx) =>
           row.map((cell, colIdx) => {
             let bgColor = "grey.300";
-            if (cell === 1) bgColor = "primary.main";
+            if (cell > 0) bgColor = "primary.main";
             else if (cell === -1) bgColor = "black";
 
             return (
@@ -181,7 +181,7 @@ export function GridTableEditor({
                 sx={{ cursor: "pointer", border: "1px solid #ccc" }}
               />
             );
-          })
+          }),
         )}
       </Box>
     </Box>
