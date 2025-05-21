@@ -31,11 +31,12 @@ export function WorkspaceForm({ workspace }: WorkspaceFormProps) {
   const { mutate: editWorkspace, isPending: isEditPending } =
     useEditWorkspace();
   const [open, setOpen] = useState(false);
-  const { control, handleSubmit, setValue } = useForm({
+  const { control, handleSubmit, setValue, watch } = useForm({
     resolver: valibotResolver(useWorkspaceForm()),
     defaultValues: workspace ? { ...workspace } : undefined,
   });
-
+  const floorPlan = watch("floorPlan");
+  console.log(floorPlan);
   const navigate = useNavigate();
   const onSubmit = (data: CreateWorkspaceDto) => {
     if (workspace) {
@@ -46,7 +47,7 @@ export function WorkspaceForm({ workspace }: WorkspaceFormProps) {
   const handleCreateWorkspace = (data: CreateWorkspaceDto) => {
     createWorkspace(data, {
       onSuccess: () => {
-        navigate({ to: "/home" });
+        navigate({ to: "/admin/workspace" });
       },
     });
   };
@@ -55,7 +56,7 @@ export function WorkspaceForm({ workspace }: WorkspaceFormProps) {
       const serverData = { workspace: data, id: workspace.id.toString() };
       editWorkspace(serverData, {
         onSuccess: () => {
-          navigate({ to: "/home" });
+          navigate({ to: "/admin/workspace" });
         },
       });
     }
@@ -185,6 +186,7 @@ export function WorkspaceForm({ workspace }: WorkspaceFormProps) {
           <GridTableEditor
             updateFloorPlan={updateFloorPlan}
             setOpen={setOpen}
+            initialGrid={floorPlan}
           />
         </DialogContent>
       </Dialog>

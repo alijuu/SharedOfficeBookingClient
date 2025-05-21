@@ -1,8 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { IconButton, Paper } from "@mui/material";
+import { IconButton, Paper, Box } from "@mui/material";
 import WorkspaceDetails from "../../../../../components/WorkspaceDetails.tsx";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-
+import EditIcon from "@mui/icons-material/Edit";
 export const Route = createFileRoute("/_dashboard/admin/workspace/$id/")({
   component: RouteComponent,
 });
@@ -12,9 +12,23 @@ function RouteComponent() {
   const navigate = useNavigate();
   return (
     <Paper sx={{ padding: 3 }}>
-      <IconButton onClick={() => navigate({ to: "/home" })} sx={{ mb: 2 }}>
-        <ArrowBackIcon />
-      </IconButton>
+      <Box sx={{ display: "flex", justifyContent: "space-between" }}>
+        <IconButton
+          onClick={() => navigate({ to: "/admin/workspace" })}
+          sx={{ mb: 2 }}
+        >
+          <ArrowBackIcon />
+        </IconButton>
+        <IconButton
+          onClick={() =>
+            navigate({ to: "/admin/workspace/$id/edit", params: { id } })
+          }
+          aria-label="Edit workspace"
+        >
+          <EditIcon />
+        </IconButton>
+      </Box>
+
       <WorkspaceDetails id={id} />
     </Paper>
   );
