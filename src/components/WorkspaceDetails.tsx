@@ -26,7 +26,7 @@ const WorkspaceDetails = () => {
       } else {
         return null;
       }
-    }),
+    })
   );
   const workspace = data?.data;
   if (!workspace && !isLoading) {

@@ -54,6 +54,21 @@ export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
               return <Box key={`${rowIdx}-${colIdx}`} />;
             }
 
+            // Render wall if desk.id === -1
+            if (desk.id === -1) {
+              return (
+                <Box
+                  key={`${rowIdx}-${colIdx}`}
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    bgcolor: "black",
+                    borderRadius: 1,
+                  }}
+                />
+              );
+            }
+
             const isClickable = desk.status === "available";
 
             return (
@@ -72,7 +87,7 @@ export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
                 <DeskBook id={desk.id.toString()} />
               </Box>
             );
-          }),
+          })
         )}
       </Box>
     </Box>

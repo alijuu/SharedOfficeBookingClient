@@ -25,9 +25,11 @@ export const Route = createFileRoute("/_dashboard/admin/workspace/create")({
 function CreateWorkspace() {
   const { mutate, isPending } = useCreateWorkspace();
   const [open, setOpen] = useState(false);
-  const { control, handleSubmit, setValue } = useForm({
+
+  const { control, handleSubmit, setValue, watch } = useForm({
     resolver: valibotResolver(useWorkspaceForm()),
   });
+  const floorPlan = watch("floorPlan");
   const navigate = useNavigate();
   const onSubmit = (data: CreateWorkspaceDto) => {
     console.log("Workspace submitted:", data);
@@ -162,6 +164,7 @@ function CreateWorkspace() {
             <GridTableEditor
               updateFloorPlan={updateFloorPlan}
               setOpen={setOpen}
+              initialGrid={floorPlan}
             />
           </DialogContent>
         </Dialog>
