@@ -1,12 +1,10 @@
 import { Box } from "@mui/material";
 import { DeskBook } from "../../resources/desk/DeskBook.tsx";
 import { Desk } from "../TableBooking/DeskBooking.tsx";
-
 type DeskBookingProps = {
   grid: Desk[][];
   onDeskClick?: (desk: Desk) => void;
 };
-
 export function DeskLayoutShow({ grid, onDeskClick }: DeskBookingProps) {
   return (
     <Box
@@ -21,33 +19,15 @@ export function DeskLayoutShow({ grid, onDeskClick }: DeskBookingProps) {
     >
       {grid.map((row, rowIdx) =>
         row.map((desk, colIdx) => {
-          const key = `${rowIdx}-${colIdx}`;
-
-          // If no desk at this position, render an empty box
           if (!desk) {
-            return <Box key={key} />;
-          }
-
-          // If id === -1, treat it as a wall and render a black cell
-          if (desk.id === -1) {
-            return (
-              <Box
-                key={key}
-                sx={{
-                  width: "100%",
-                  height: "100%",
-                  bgcolor: "black",
-                  borderRadius: 1,
-                }}
-              />
-            );
+            return <Box key={`${rowIdx}-${colIdx}`} />;
           }
 
           const isClickable = desk.status === "available";
 
           return (
             <Box
-              key={key}
+              key={`${rowIdx}-${colIdx}`}
               onClick={() => isClickable && onDeskClick?.(desk)}
               sx={{
                 cursor: isClickable ? "pointer" : "not-allowed",
@@ -61,7 +41,7 @@ export function DeskLayoutShow({ grid, onDeskClick }: DeskBookingProps) {
               <DeskBook />
             </Box>
           );
-        })
+        }),
       )}
     </Box>
   );

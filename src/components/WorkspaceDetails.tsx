@@ -1,6 +1,6 @@
 import { Box, Typography, Button, CircularProgress } from "@mui/material";
 
-import { useNavigate, useParams } from "@tanstack/react-router";
+import { useNavigate } from "@tanstack/react-router";
 import ImageCarousel from "./ImageCarousel/ImageCarousel.tsx";
 import { useGetWorkspace } from "../http/workspace/data.ts";
 import { Desk } from "./TableBooking/DeskBooking.tsx";
@@ -10,10 +10,9 @@ const thumbnails = [
   "https://png.pngtree.com/thumb_back/fh260/background/20230619/pngtree-d-rendering-of-a-modern-style-office-room-with-white-and-image_3645011.jpg",
   "https://officebanao.com/wp-content/uploads/2024/02/3d-rendering-business-meeting-room.jpg",
 ];
-const WorkspaceDetails = () => {
-  const params = useParams({ from: "/_auth/workspace/$id/" });
+const WorkspaceDetails = ({ id }: { id: string }) => {
   const navigate = useNavigate();
-  const { data, isLoading } = useGetWorkspace({ id: params.id });
+  const { data, isLoading } = useGetWorkspace({ id: id });
   const grid: Desk[][] = (data?.data.floorPlan ?? []).map((row, rowIdx) =>
     row.map((val, colIdx) => {
       if (val !== 0) {
@@ -26,7 +25,7 @@ const WorkspaceDetails = () => {
       } else {
         return null;
       }
-    })
+    }),
   );
   const workspace = data?.data;
   if (!workspace && !isLoading) {
@@ -69,8 +68,8 @@ const WorkspaceDetails = () => {
           padding: 4,
           maxWidth: "1200px",
           margin: "0 auto",
-          flexShrink: 0,
-          flexGrow: 1,
+          // flexShrink: 0,
+          // flexGrow: 1,
           display: "flex",
           flexDirection: "column",
           width: "100%",
@@ -117,7 +116,7 @@ const WorkspaceDetails = () => {
               variant="contained"
               fullWidth
               onClick={() => {
-                navigate({ to: "/workspace/$id/book", params });
+                navigate({ to: "/workspace/$id/book", params: { id } });
               }}
             >
               Book Now
@@ -125,7 +124,16 @@ const WorkspaceDetails = () => {
           </Box>
         </Box>
       </Box>
-      <DeskLayoutShow grid={grid} />
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
+        <DeskLayoutShow grid={grid} />
+      </Box>
     </>
   );
 };

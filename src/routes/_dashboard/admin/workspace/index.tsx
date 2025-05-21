@@ -1,25 +1,24 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import {
-  useDeleteWorkspace,
-  useGetAllWorkspaces,
-} from "../../../../http/workspace/data";
+import { useGetAllWorkspaces } from "../../../../http/workspace/data";
 import { Box, Button, CircularProgress, Paper } from "@mui/material";
 import WorkspaceCard from "../../../../components/WorkspaceCard.tsx";
+import { DeleteWorkspaceDialog } from "../../../../components/Dialog/DeleteDialog.tsx";
+import { useRef } from "react";
+import { DialogStateRef } from "../../../../util/dialog.ts";
 
 export const Route = createFileRoute("/_dashboard/admin/workspace/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { mutate: deleteWorkspace, isPending } = useDeleteWorkspace();
   const { data, isLoading } = useGetAllWorkspaces();
   const navigate = useNavigate();
-
-  const handleDelete = (id: string) => {
-    deleteWorkspace(id, {
-      onSuccess: async () => {},
-    });
-  };
+  const dialogRef = useRef<DialogStateRef<(id?: string) => void>>({
+    closeDialog: () => {},
+    openDialog: () => {},
+    preventClose: false,
+    setPreventClose: () => {},
+  });
 
   if (isLoading) {
     return (
@@ -51,7 +50,7 @@ function RouteComponent() {
         width: "100%",
       }}
     >
-      <Box sx={{ flex: 1, padding: 3 }}>
+      <Box>
         <Paper sx={{ padding: 3 }}>
           <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
             <Button
@@ -85,6 +84,7 @@ function RouteComponent() {
                     description={workspace.description}
                     imageUrl={workspace.imageUrl}
                     id={workspace.id.toString()}
+                    admin={true}
                   />
                   <Box
                     sx={{
@@ -94,10 +94,15 @@ function RouteComponent() {
                     }}
                   >
                     <Button
-                      disabled={true}
                       fullWidth
                       variant="contained"
                       color="info"
+                      onClick={() =>
+                        navigate({
+                          to: "/admin/workspace/$id/edit",
+                          params: { id: workspace.id.toString() },
+                        })
+                      }
                     >
                       Edit
                     </Button>
@@ -105,12 +110,15 @@ function RouteComponent() {
                       fullWidth
                       variant="contained"
                       color="error"
-                      disabled={isPending}
-                      onClick={() => handleDelete(workspace.id.toString())}
+                      onClick={() => dialogRef.current.openDialog()}
                     >
                       Delete
                     </Button>
                   </Box>
+                  <DeleteWorkspaceDialog
+                    ref={dialogRef}
+                    id={workspace.id.toString()}
+                  />
                 </Box>
               ))
             ) : (
