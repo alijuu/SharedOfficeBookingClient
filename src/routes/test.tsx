@@ -1,6 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import {BaseLayout} from '../components/layout/BaseLayout.tsx';
-import WorkspaceDetails from '../components/WorkspaceDetails';
+
+import DeskDetails from "../components/DeskDetails/DeskDetails.tsx";
 
 
 export const Route = createFileRoute('/test')({
@@ -9,6 +10,7 @@ export const Route = createFileRoute('/test')({
 
 function RouteComponent() {
   return <BaseLayout>
-    <WorkspaceDetails/>
+    <DeskDetails/>
+
   </BaseLayout>
 }
