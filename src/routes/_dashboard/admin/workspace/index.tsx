@@ -1,13 +1,12 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Box, Button, Paper, CircularProgress } from "@mui/material";
 import {
   useDeleteWorkspace,
   useGetAllWorkspaces,
-} from "../../../http/workspace/data.ts";
-import WorkspaceCard from "../../../components/WorkspaceCard.tsx";
+} from "../../../../http/workspace/data";
+import { Box, Button, CircularProgress, Paper } from "@mui/material";
+import WorkspaceCard from "../../../../components/WorkspaceCard.tsx";
 
-// Define route
-export const Route = createFileRoute("/_auth/admin/")({
+export const Route = createFileRoute("/_dashboard/admin/workspace/")({
   component: RouteComponent,
 });
 
@@ -94,7 +93,12 @@ function RouteComponent() {
                       mt: 1,
                     }}
                   >
-                    <Button fullWidth variant="contained" color="primary">
+                    <Button
+                      disabled={true}
+                      fullWidth
+                      variant="contained"
+                      color="info"
+                    >
                       Edit
                     </Button>
                     <Button

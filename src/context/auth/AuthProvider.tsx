@@ -2,7 +2,7 @@ import * as React from "react";
 import { AuthContext, AuthUser } from "./AuthContext";
 import { authProvider } from "../../authProvider.ts";
 
-const key = "tanstack.auth.user";
+const key = "tanstack.auth.users";
 
 function getStoredUser() {
   try {

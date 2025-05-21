@@ -1,12 +1,8 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import {
-  CreateWorkspaceDto,
-  useCreateWorkspace,
-} from "../../../../http/workspace/data.ts";
+
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { valibotResolver } from "@hookform/resolvers/valibot";
-import { useWorkspaceForm } from "../../../../resources/workspaces/useForm.ts";
 import {
   Box,
   Button,
@@ -17,9 +13,12 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import { useWorkspaceForm } from "../../../../resources/workspaces/useForm";
+import { useCreateWorkspace } from "../../../../http/workspace/data";
+import { CreateWorkspaceDto } from "../../../../http/workspace/data.ts";
 import GridTableEditor from "../../../../components/GridTableEditor.tsx";
 
-export const Route = createFileRoute("/_auth/admin/workspace/create")({
+export const Route = createFileRoute("/_dashboard/admin/workspace/create")({
   component: CreateWorkspace,
 });
 
@@ -33,7 +32,6 @@ function CreateWorkspace() {
   const onSubmit = (data: CreateWorkspaceDto) => {
     console.log("Workspace submitted:", data);
     createWorkspace(data);
-    // Ovdje ide poziv prema backendu kad ga budete imali
   };
 
   const createWorkspace = (data: CreateWorkspaceDto) => {
