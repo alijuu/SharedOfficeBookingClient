@@ -16,6 +16,19 @@ export interface CreateWorkspaceDto {
   description: string;
   floorPlan: number[][];
 }
+export interface UpdateWorkspaceDto {
+  name: string;
+  address: string;
+  email: string;
+  phone: string;
+  imageUrl: string;
+  description: string;
+  floorPlan: number[][];
+}
+export interface UpdateWorkspace {
+  workspace: UpdateWorkspaceDto;
+  id: string;
+}
 export interface CreateBooking {
   userId: string;
   deskId: string;
@@ -37,6 +50,25 @@ export function useCreateWorkspace() {
     },
     onError: () => {
       open("Workspace creation failed.", "error");
+    },
+  });
+}
+export function useEditWorkspace() {
+  const { open } = useNotification();
+  return useMutation({
+    mutationFn: async (data: UpdateWorkspace) => {
+      const response = await apiClient.put(
+        `/api/workspaces/update/${data.id}`,
+        data.workspace,
+      );
+      return response.data;
+    },
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ["workspace"] });
+      open("Workspace updated successfully!", "success");
+    },
+    onError: () => {
+      open("Workspace update failed.", "error");
     },
   });
 }
