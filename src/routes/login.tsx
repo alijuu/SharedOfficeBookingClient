@@ -45,7 +45,6 @@ function RouteComponent() {
       setShowLoader(false); // Hide the loader after 2 seconds
     }, 500);
   };
-
   return (
     <Box
       sx={{

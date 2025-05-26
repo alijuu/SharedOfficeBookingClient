@@ -1,16 +1,22 @@
 import * as React from "react";
-import { AuthContext } from "./AuthContext.ts";
+import { AuthContext, AuthUser } from "./AuthContext";
+import { authProvider } from "../../authProvider.ts";
 
-const key = "tanstack.auth.user";
+const key = "tanstack.auth.users";
 
 function getStoredUser() {
-  return localStorage.getItem(key);
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : null;
+  } catch {
+    return null;
+  }
 }
 
-function setStoredUser(user: string | null) {
+function setStoredUser(user: AuthUser | null) {
   try {
     if (user) {
-      localStorage.setItem(key, user);
+      localStorage.setItem(key, JSON.stringify(user));
     } else {
       localStorage.removeItem(key);
     }
@@ -20,18 +26,39 @@ function setStoredUser(user: string | null) {
 }
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-  const [user, setUser] = React.useState<string | null>(() => getStoredUser());
+  const [user, setUser] = React.useState(() => getStoredUser());
   const isAuthenticated = !!user;
 
   const logout = React.useCallback(async () => {
+    await authProvider.logout();
     setStoredUser(null);
     setUser(null);
   }, []);
 
-  const login = React.useCallback(async (username: string) => {
-    setStoredUser(username);
-    setUser(username);
+  const login = React.useCallback(async (userObj: AuthUser) => {
+    setStoredUser(userObj);
+    setUser(userObj);
   }, []);
+
+  React.useEffect(() => {
+    const checkIdentity = async () => {
+      const token = localStorage.getItem("accessToken");
+      if (!token) return;
+
+      try {
+        const identity = await authProvider.getIdentity();
+        setStoredUser(identity);
+        setUser(identity);
+      } catch (err) {
+        console.warn("Failed to fetch identity:", err);
+        await logout();
+      }
+    };
+
+    if (!user) {
+      checkIdentity();
+    }
+  }, [user, logout]);
 
   return (
     <AuthContext.Provider value={{ isAuthenticated, user, login, logout }}>

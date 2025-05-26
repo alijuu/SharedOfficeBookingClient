@@ -10,6 +10,7 @@ export default defineConfig({
     TanStackRouterVite({ target: "react", autoCodeSplitting: true }),
     tailwindcss(),
     react(),
+    
     // ...,
   ],
   server: {

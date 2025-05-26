@@ -2,7 +2,8 @@ import { useState } from "react";
 import { Box, Card, CardMedia, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { AppointmentDetails, Booking } from "../components/AppointmentDetails";
-import { HomeLayout } from "../components/layout/HomeLayout";
+import { BaseLayout } from "../components/Layout/BaseLayout";
+
 
 // Mock booking data
 const initialBookings: Booking[] = [
@@ -65,7 +66,7 @@ function BookingsPage() {
   };
 
   return (
-    <HomeLayout>
+    <BaseLayout>
       <Box
         sx={{
           bgcolor: "#f7f7f7",
@@ -166,7 +167,7 @@ function BookingsPage() {
           </Box>
         </Box>
       </Box>
-    </HomeLayout>
+    </BaseLayout>
   );
 }
 

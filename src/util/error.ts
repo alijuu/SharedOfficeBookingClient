@@ -46,3 +46,9 @@ export function parseAxiosError(error: unknown): string {
 
   return "An unknown error occurred.";
 }
+
+export function isApplicationHttpError<T = unknown, D = unknown>(
+  error: unknown,
+): error is ApplicationHttpError<T, D> {
+  return error != null && typeof error === "object" && "axiosError" in error;
+}
