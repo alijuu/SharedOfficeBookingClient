@@ -23,7 +23,7 @@ export function HomeLayout({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <Box display="flex" width="100%" flexDirection="column">
+    <Box display="flex" width="100%" flexDirection="column" minHeight="100vh">
       <AppBar
         position="static"
         elevation={0}
@@ -76,8 +76,10 @@ export function HomeLayout({ children }: { children: React.ReactNode }) {
         </Toolbar>
       </AppBar>
       <Container
-        sx={{ my: 4, flex: 1, position: "relative", width: "100%" }}
+        disableGutters
+        sx={{ mt: 4, flex: 1, position: "relative", width: "100%",p: 0 }}
         maxWidth={false}
+        
       >
         {children}
       </Container>
