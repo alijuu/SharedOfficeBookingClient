@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Box, Card, CardMedia, Typography } from "@mui/material";
 import { createFileRoute } from "@tanstack/react-router";
 import { AppointmentDetails, Booking } from "../components/AppointmentDetails";
