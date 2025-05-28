@@ -105,11 +105,12 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
         sx={{
           my: 4,
           flex: 1,
-          position: "relative",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          flexDirection: "column",
+          width: '100%',
+          //position: "relative",
+          //display: "flex",
+         // justifyContent: "center",
+         //alignItems: "center",
+         // flexDirection: "column",
         }}
       >
         {children}
