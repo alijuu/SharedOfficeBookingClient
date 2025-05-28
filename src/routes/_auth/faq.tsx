@@ -1,5 +1,14 @@
-import { useState, CSSProperties } from 'react';
+import { useState } from 'react';
 import { createFileRoute } from '@tanstack/react-router';
+import {
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Typography,
+  Container,
+  Box,
+} from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
 export const Route = createFileRoute('/_auth/faq')({
   component: RouteComponent,
@@ -28,123 +37,79 @@ const faqs = [
   },
 ];
 
-const styles: { [key: string]: CSSProperties } = {
-  container: {
-    maxWidth: '1000px',
-    margin: '40px auto',
-    padding: '0 20px',
-    fontFamily: '"Roboto", sans-serif',
-  },
-  title: {
-    fontSize: 40,
-    fontWeight: 700,
-    marginBottom: 70,
-    textAlign: 'center',
-    
-  },
-  faqList: {
-    display: 'flex',
-    flexDirection: 'column',
-    gap: 15,
-  },
-  faqItem: {
-    border: '1px solid #60a5fa', // new lighter blue
-    borderRadius: 12,
-    boxShadow: '0 2px 6px rgba(96,165,250,0.2)',
-    backgroundColor: '#e0f2fe', // new light blue
-    overflow: 'hidden',
-    transition: 'all 0.3s ease',
-  },
-  questionButton: {
-    width: '100%',
-    background: 'none',
-    border: 'none',
-    padding: '20px 24px',
-    textAlign: 'left' as const,
-    cursor: 'pointer',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-  },
-  questionText: {
-    fontSize: 25,
-    fontWeight: 600,
-    color: '#1e293b',
-  },
-  icon: {
-    fontSize: 35,
-    fontWeight: 700,
-    color: '#000000',
-    //color: '#2563eb', // vivid blue for icon
-    transition: 'transform 0.3s ease',
-  },
-  answerWrapper: {
-    height: '40px', // enough for 2–3 lines of text
-    transition: 'opacity 0.3s ease',
-    padding: '0 24px 20px',
-    fontSize: 20,
-    fontWeight: 500,
-    color: '#475569',
-    lineHeight: 1.5,
-    opacity: 0,
-    pointerEvents: 'none',
-  },
-  answerWrapperOpen: {
-    opacity: 1,
-    pointerEvents: 'auto',
-  },
-};
-
 function RouteComponent() {
-  const [openIndexes, setOpenIndexes] = useState<number[]>([]);
+  const [expanded, setExpanded] = useState<number[]>([]);
+
 
   const toggle = (index: number) => {
-    if (openIndexes.includes(index)) {
-      setOpenIndexes(openIndexes.filter((i) => i !== index));
-    } else {
-      setOpenIndexes([...openIndexes, index]);
-    }
+    setExpanded((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
   };
 
   return (
-    <div style={styles.container}>
-      <h1 style={styles.title}>Frequently Asked Questions</h1>
-      <div style={styles.faqList}>
+    <Container maxWidth="lg" sx={{ py: 6 }}>    
+      <Typography
+        variant="h3"
+        align="center"
+        fontWeight={700}
+        gutterBottom        
+        sx={{ mb: 15, fontSize: { xs: 32, sm: 40, md: 48 } }}
+
+        //sx={{ mb: 7 }}
+      >
+        Frequently Asked Questions
+      </Typography>
+      <Box display="flex" flexDirection="column" gap={3} mt={10}>
         {faqs.map(({ question, answer }, index) => {
-          const isOpen = openIndexes.includes(index);
+          const isOpen = expanded.includes(index);
           return (
-            <div key={index} style={styles.faqItem}>
-              <button
-                onClick={() => toggle(index)}
-                aria-expanded={isOpen}
-                aria-controls={`faq-answer-${index}`}
-                id={`faq-question-${index}`}
-                style={styles.questionButton}
+            <Accordion
+              key={index}
+              expanded={isOpen}
+              onChange={() => toggle(index)}
+              sx={{
+                backgroundColor: '#e0f2fe',
+                border: '1px solid #60a5fa',
+                boxShadow: '0 2px 6px rgba(96,165,250,0.2)',
+                borderRadius: 2,
+                '&::before': { display: 'none' },
+              }}
+            >
+              <AccordionSummary
+                expandIcon={
+                  <AddIcon
+                    sx={{
+                      transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+                      transition: 'transform 0.3s ease',
+                      fontSize: 35,
+                      fontWeight: 700,
+                      color: '#000',
+                    }}
+                  />
+                }
               >
-                <span style={styles.questionText}>{question}</span>
-                <span
-                  style={{
-                    ...styles.icon,
-                    transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
-                  }}
+                <Typography
+                  sx={{ fontSize: 25, fontWeight: 600, color: '#1e293b' }}
                 >
-                  +
-                </span>
-              </button>
-              <div
-                id={`faq-answer-${index}`}
-                aria-labelledby={`faq-question-${index}`}
-                style={{
-                  ...styles.answerWrapper,
-                  ...(isOpen ? styles.answerWrapperOpen : {}),
+                  {question}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails
+                sx={{
+                  fontSize: 20,
+                  fontWeight: 500,
+                  color: '#475569',
+                  lineHeight: 1.5,
                 }}
               >
                 {answer}
-              </div>
-            </div>
+              </AccordionDetails>
+            </Accordion>
           );
         })}
-      </div>
-    </div>
+      </Box>
+    </Container>
   );
 }
+
