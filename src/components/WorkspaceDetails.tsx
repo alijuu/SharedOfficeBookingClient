@@ -2,7 +2,10 @@ import { Box, Typography, Button, CircularProgress } from "@mui/material";
 
 import { useNavigate } from "@tanstack/react-router";
 import ImageCarousel from "./ImageCarousel/ImageCarousel.tsx";
-import { useGetWorkspace } from "../http/workspace/data.ts";
+import {
+  useGetAvailableDesk,
+  useGetWorkspace,
+} from "../http/workspace/data.ts";
 import { Desk } from "./TableBooking/DeskBooking.tsx";
 import { DeskLayoutShow } from "./DeskShow/DeskLayoutShow.tsx";
 const thumbnails = [
@@ -13,6 +16,8 @@ const thumbnails = [
 const WorkspaceDetails = ({ id }: { id: string }) => {
   const navigate = useNavigate();
   const { data, isLoading } = useGetWorkspace({ id: id });
+  const { data: freeDesks } = useGetAvailableDesk(id);
+  console.log(freeDesks);
   const grid: Desk[][] = (data?.data.floorPlan ?? []).map((row, rowIdx) =>
     row.map((val, colIdx) => {
       if (val !== 0) {
@@ -25,7 +30,7 @@ const WorkspaceDetails = ({ id }: { id: string }) => {
       } else {
         return null;
       }
-    })
+    }),
   );
   const workspace = data?.data;
   if (!workspace && !isLoading) {
@@ -41,22 +46,14 @@ const WorkspaceDetails = ({ id }: { id: string }) => {
   if (isLoading) {
     return (
       <Box
-        sx={{
-          position: "absolute",
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
+        display="flex"
+        height="100vh"
+        width="100%"
+        justifyContent="center"
+        alignItems="center"
+        zIndex={1999}
       >
-        <CircularProgress
-          sx={{
-            height: "100%",
-          }}
-        />
+        <CircularProgress />
       </Box>
     );
   }

@@ -4,7 +4,7 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { routeTree } from "./routeTree.gen";
 import "./index.css";
 import { queryClient } from "./util/client.ts";
-import { CssBaseline } from "@mui/material";
+import { Box, CircularProgress, CssBaseline } from "@mui/material";
 import { NotificationProvider } from "./context/notifications/NotificationProvider.tsx";
 import { AuthProvider } from "./context/auth/AuthProvider.tsx";
 import { useAuth } from "./context/auth/useAuth.ts";
@@ -29,7 +29,25 @@ declare module "@tanstack/react-router" {
 
 export function App() {
   const auth = useAuth();
-  return <RouterProvider router={router} context={{ auth }} />;
+  return (
+    <RouterProvider
+      router={router}
+      context={{ auth }}
+      defaultPendingComponent={() => {
+        return (
+          <Box
+            display="flex"
+            height="100vh"
+            width="100%"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <CircularProgress />
+          </Box>
+        );
+      }}
+    />
+  );
 }
 const rootElement = document.getElementById("root")!;
 
