@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { apiClient, queryClient } from "../../util/client.ts";
 import { createQueryHook } from "../../util/queryClientHelper.ts";
 import {
@@ -128,6 +128,18 @@ export function useDeleteWorkspace() {
     },
     onError: () => {
       open("Workspace deletion failed.", "error");
+    },
+  });
+}
+
+export function useGetAvailableDesk(id: string) {
+  return useQuery({
+    queryKey: ["desks/available", id],
+    queryFn: async () => {
+      const { data } = await apiClient.get(
+        `/api/desk/workspace/${id}/booked-now`,
+      );
+      return data;
     },
   });
 }

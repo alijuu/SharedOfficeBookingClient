@@ -6,7 +6,6 @@ import { Box, CircularProgress, Paper } from "@mui/material";
 
 export const Route = createFileRoute("/_auth/home")({
   component: RouteComponent,
-  pendingComponent: () => <CircularProgress color="inherit" />,
 });
 
 function renderItem(workspace: Workspace) {
