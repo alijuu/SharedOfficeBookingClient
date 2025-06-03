@@ -2,9 +2,7 @@ import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useGetAllWorkspaces } from "../../../../http/workspace/data";
 import { Box, Button, CircularProgress, Paper } from "@mui/material";
 import WorkspaceCard from "../../../../components/WorkspaceCard.tsx";
-import { DeleteWorkspaceDialog } from "../../../../components/Dialog/DeleteDialog.tsx";
-import { useRef } from "react";
-import { DialogStateRef } from "../../../../util/dialog.ts";
+import { DeleteWorkspaceButton } from "../../../../resources/workspaces/DeleteButton.tsx";
 
 export const Route = createFileRoute("/_dashboard/admin/workspace/")({
   component: RouteComponent,
@@ -13,12 +11,6 @@ export const Route = createFileRoute("/_dashboard/admin/workspace/")({
 function RouteComponent() {
   const { data, isLoading } = useGetAllWorkspaces();
   const navigate = useNavigate();
-  const dialogRef = useRef<DialogStateRef<(id?: string) => void>>({
-    closeDialog: () => {},
-    openDialog: () => {},
-    preventClose: false,
-    setPreventClose: () => {},
-  });
 
   if (isLoading) {
     return (
@@ -106,19 +98,8 @@ function RouteComponent() {
                     >
                       Edit
                     </Button>
-                    <Button
-                      fullWidth
-                      variant="contained"
-                      color="error"
-                      onClick={() => dialogRef.current.openDialog()}
-                    >
-                      Delete
-                    </Button>
+                    <DeleteWorkspaceButton id={workspace.id.toString()} />
                   </Box>
-                  <DeleteWorkspaceDialog
-                    ref={dialogRef}
-                    id={workspace.id.toString()}
-                  />
                 </Box>
               ))
             ) : (

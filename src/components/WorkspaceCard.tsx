@@ -26,14 +26,14 @@ const WorkspaceCard = ({
   admin,
 }: WorkspaceCardProps) => {
   const navigate = useNavigate();
-  const onViewDetails = () => {
+  const onViewDetails = async () => {
     if (admin) {
-      navigate({
+      await navigate({
         to: "/admin/workspace/$id",
         params: { id: id },
       });
     } else {
-      navigate({
+      await navigate({
         to: "/workspace/$id",
         params: { id: id },
       });
@@ -82,7 +82,12 @@ const WorkspaceCard = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" variant="outlined" onClick={onViewDetails}>
+        <Button
+          size="small"
+          variant="outlined"
+          onClick={onViewDetails}
+          sx={{ width: "100%" }}
+        >
           View Details
         </Button>
       </CardActions>
