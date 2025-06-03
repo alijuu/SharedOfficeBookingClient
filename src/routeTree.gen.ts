@@ -22,9 +22,7 @@ import { Route as AuthHomeImport } from './routes/_auth/home'
 import { Route as AuthFaqImport } from './routes/_auth/faq'
 import { Route as AuthCreateImport } from './routes/_auth/create'
 import { Route as DashboardAdminIndexImport } from './routes/_dashboard/admin/index'
-import { Route as AuthUserIndexImport } from './routes/_auth/user/index'
 import { Route as DashboardAdminHomeImport } from './routes/_dashboard/admin/home'
-import { Route as AuthUserSettingsImport } from './routes/_auth/user/settings'
 import { Route as DashboardAdminWorkspaceIndexImport } from './routes/_dashboard/admin/workspace/index'
 import { Route as DashboardAdminUsersIndexImport } from './routes/_dashboard/admin/users/index'
 import { Route as DashboardAdminDeskIndexImport } from './routes/_dashboard/admin/desk/index'
@@ -100,22 +98,10 @@ const DashboardAdminIndexRoute = DashboardAdminIndexImport.update({
   getParentRoute: () => DashboardRoute,
 } as any)
 
-const AuthUserIndexRoute = AuthUserIndexImport.update({
-  id: '/user/',
-  path: '/user/',
-  getParentRoute: () => AuthRoute,
-} as any)
-
 const DashboardAdminHomeRoute = DashboardAdminHomeImport.update({
   id: '/admin/home',
   path: '/admin/home',
   getParentRoute: () => DashboardRoute,
-} as any)
-
-const AuthUserSettingsRoute = AuthUserSettingsImport.update({
-  id: '/user/settings',
-  path: '/user/settings',
-  getParentRoute: () => AuthRoute,
 } as any)
 
 const DashboardAdminWorkspaceIndexRoute =
@@ -244,26 +230,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthHomeImport
       parentRoute: typeof AuthImport
     }
-    '/_auth/user/settings': {
-      id: '/_auth/user/settings'
-      path: '/user/settings'
-      fullPath: '/user/settings'
-      preLoaderRoute: typeof AuthUserSettingsImport
-      parentRoute: typeof AuthImport
-    }
     '/_dashboard/admin/home': {
       id: '/_dashboard/admin/home'
       path: '/admin/home'
       fullPath: '/admin/home'
       preLoaderRoute: typeof DashboardAdminHomeImport
       parentRoute: typeof DashboardImport
-    }
-    '/_auth/user/': {
-      id: '/_auth/user/'
-      path: '/user'
-      fullPath: '/user'
-      preLoaderRoute: typeof AuthUserIndexImport
-      parentRoute: typeof AuthImport
     }
     '/_dashboard/admin/': {
       id: '/_dashboard/admin/'
@@ -337,8 +309,6 @@ interface AuthRouteChildren {
   AuthCreateRoute: typeof AuthCreateRoute
   AuthFaqRoute: typeof AuthFaqRoute
   AuthHomeRoute: typeof AuthHomeRoute
-  AuthUserSettingsRoute: typeof AuthUserSettingsRoute
-  AuthUserIndexRoute: typeof AuthUserIndexRoute
   AuthWorkspaceIdBookRoute: typeof AuthWorkspaceIdBookRoute
   AuthWorkspaceIdIndexRoute: typeof AuthWorkspaceIdIndexRoute
 }
@@ -347,8 +317,6 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthCreateRoute: AuthCreateRoute,
   AuthFaqRoute: AuthFaqRoute,
   AuthHomeRoute: AuthHomeRoute,
-  AuthUserSettingsRoute: AuthUserSettingsRoute,
-  AuthUserIndexRoute: AuthUserIndexRoute,
   AuthWorkspaceIdBookRoute: AuthWorkspaceIdBookRoute,
   AuthWorkspaceIdIndexRoute: AuthWorkspaceIdIndexRoute,
 }
@@ -391,9 +359,7 @@ export interface FileRoutesByFullPath {
   '/create': typeof AuthCreateRoute
   '/faq': typeof AuthFaqRoute
   '/home': typeof AuthHomeRoute
-  '/user/settings': typeof AuthUserSettingsRoute
   '/admin/home': typeof DashboardAdminHomeRoute
-  '/user': typeof AuthUserIndexRoute
   '/admin': typeof DashboardAdminIndexRoute
   '/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
   '/admin/workspace/create': typeof DashboardAdminWorkspaceCreateRoute
@@ -415,9 +381,7 @@ export interface FileRoutesByTo {
   '/create': typeof AuthCreateRoute
   '/faq': typeof AuthFaqRoute
   '/home': typeof AuthHomeRoute
-  '/user/settings': typeof AuthUserSettingsRoute
   '/admin/home': typeof DashboardAdminHomeRoute
-  '/user': typeof AuthUserIndexRoute
   '/admin': typeof DashboardAdminIndexRoute
   '/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
   '/admin/workspace/create': typeof DashboardAdminWorkspaceCreateRoute
@@ -441,9 +405,7 @@ export interface FileRoutesById {
   '/_auth/create': typeof AuthCreateRoute
   '/_auth/faq': typeof AuthFaqRoute
   '/_auth/home': typeof AuthHomeRoute
-  '/_auth/user/settings': typeof AuthUserSettingsRoute
   '/_dashboard/admin/home': typeof DashboardAdminHomeRoute
-  '/_auth/user/': typeof AuthUserIndexRoute
   '/_dashboard/admin/': typeof DashboardAdminIndexRoute
   '/_auth/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
   '/_dashboard/admin/workspace/create': typeof DashboardAdminWorkspaceCreateRoute
@@ -467,9 +429,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/faq'
     | '/home'
-    | '/user/settings'
     | '/admin/home'
-    | '/user'
     | '/admin'
     | '/workspace/$id/book'
     | '/admin/workspace/create'
@@ -490,9 +450,7 @@ export interface FileRouteTypes {
     | '/create'
     | '/faq'
     | '/home'
-    | '/user/settings'
     | '/admin/home'
-    | '/user'
     | '/admin'
     | '/workspace/$id/book'
     | '/admin/workspace/create'
@@ -514,9 +472,7 @@ export interface FileRouteTypes {
     | '/_auth/create'
     | '/_auth/faq'
     | '/_auth/home'
-    | '/_auth/user/settings'
     | '/_dashboard/admin/home'
-    | '/_auth/user/'
     | '/_dashboard/admin/'
     | '/_auth/workspace/$id/book'
     | '/_dashboard/admin/workspace/create'
@@ -577,8 +533,6 @@ export const routeTree = rootRoute
         "/_auth/create",
         "/_auth/faq",
         "/_auth/home",
-        "/_auth/user/settings",
-        "/_auth/user/",
         "/_auth/workspace/$id/book",
         "/_auth/workspace/$id/"
       ]
@@ -620,17 +574,9 @@ export const routeTree = rootRoute
       "filePath": "_auth/home.tsx",
       "parent": "/_auth"
     },
-    "/_auth/user/settings": {
-      "filePath": "_auth/user/settings.tsx",
-      "parent": "/_auth"
-    },
     "/_dashboard/admin/home": {
       "filePath": "_dashboard/admin/home.tsx",
       "parent": "/_dashboard"
-    },
-    "/_auth/user/": {
-      "filePath": "_auth/user/index.tsx",
-      "parent": "/_auth"
     },
     "/_dashboard/admin/": {
       "filePath": "_dashboard/admin/index.tsx",

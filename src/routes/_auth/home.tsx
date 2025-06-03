@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useGetAllWorkspaces } from "../../http/workspace/data.ts";
 import WorkspaceCard from "../../components/WorkspaceCard.tsx";
 import { Workspace } from "../../resources/workspaces/model.ts";
-import { Box, CircularProgress, Paper } from "@mui/material";
+import { Box, CircularProgress } from "@mui/material";
 
 export const Route = createFileRoute("/_auth/home")({
   component: RouteComponent,
@@ -48,7 +48,7 @@ function RouteComponent() {
   const items = data?.items ?? [];
 
   return (
-    <Paper sx={{ padding: 3, width: "90%", minHeight: "80vh" }}>
+    <Box sx={{ width: { xs: "100%", md: "90%" }, minHeight: "80vh" }}>
       <Box
         sx={{
           // display: "flex",
@@ -85,6 +85,6 @@ function RouteComponent() {
           </Box>
         )}
       </Box>
-    </Paper>
+    </Box>
   );
 }
