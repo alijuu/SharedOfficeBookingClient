@@ -14,19 +14,23 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as TestImport } from './routes/test'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
+import { Route as BookingsImport } from './routes/bookings'
+import { Route as DashboardImport } from './routes/_dashboard'
 import { Route as AuthImport } from './routes/_auth'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthHomeImport } from './routes/_auth/home'
 import { Route as AuthFaqImport } from './routes/_auth/faq'
 import { Route as AuthCreateImport } from './routes/_auth/create'
-import { Route as AuthUserIndexImport } from './routes/_auth/user/index'
-import { Route as AuthAdminIndexImport } from './routes/_auth/admin/index'
-import { Route as AuthUserSettingsImport } from './routes/_auth/user/settings'
+import { Route as DashboardAdminIndexImport } from './routes/_dashboard/admin/index'
+import { Route as DashboardAdminHomeImport } from './routes/_dashboard/admin/home'
+import { Route as DashboardAdminWorkspaceIndexImport } from './routes/_dashboard/admin/workspace/index'
+import { Route as DashboardAdminUsersIndexImport } from './routes/_dashboard/admin/users/index'
+import { Route as DashboardAdminDeskIndexImport } from './routes/_dashboard/admin/desk/index'
 import { Route as AuthWorkspaceIdIndexImport } from './routes/_auth/workspace/$id/index'
+import { Route as DashboardAdminWorkspaceCreateImport } from './routes/_dashboard/admin/workspace/create'
 import { Route as AuthWorkspaceIdBookImport } from './routes/_auth/workspace/$id/book'
-import { Route as AuthAdminWorkspaceCreateImport } from './routes/_auth/admin/workspace/create'
-import { Route as AuthAdminWorkspaceIdIndexImport } from './routes/_auth/admin/workspace/$id/index'
-import { Route as AuthAdminWorkspaceIdEditImport } from './routes/_auth/admin/workspace/$id/edit'
+import { Route as DashboardAdminWorkspaceIdIndexImport } from './routes/_dashboard/admin/workspace/$id/index'
+import { Route as DashboardAdminWorkspaceIdEditImport } from './routes/_dashboard/admin/workspace/$id/edit'
 
 // Create/Update Routes
 
@@ -45,6 +49,17 @@ const RegisterRoute = RegisterImport.update({
 const LoginRoute = LoginImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const BookingsRoute = BookingsImport.update({
+  id: '/bookings',
+  path: '/bookings',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const DashboardRoute = DashboardImport.update({
+  id: '/_dashboard',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -77,22 +92,35 @@ const AuthCreateRoute = AuthCreateImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
-const AuthUserIndexRoute = AuthUserIndexImport.update({
-  id: '/user/',
-  path: '/user/',
-  getParentRoute: () => AuthRoute,
-} as any)
-
-const AuthAdminIndexRoute = AuthAdminIndexImport.update({
+const DashboardAdminIndexRoute = DashboardAdminIndexImport.update({
   id: '/admin/',
   path: '/admin/',
-  getParentRoute: () => AuthRoute,
+  getParentRoute: () => DashboardRoute,
 } as any)
 
-const AuthUserSettingsRoute = AuthUserSettingsImport.update({
-  id: '/user/settings',
-  path: '/user/settings',
-  getParentRoute: () => AuthRoute,
+const DashboardAdminHomeRoute = DashboardAdminHomeImport.update({
+  id: '/admin/home',
+  path: '/admin/home',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardAdminWorkspaceIndexRoute =
+  DashboardAdminWorkspaceIndexImport.update({
+    id: '/admin/workspace/',
+    path: '/admin/workspace/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+
+const DashboardAdminUsersIndexRoute = DashboardAdminUsersIndexImport.update({
+  id: '/admin/users/',
+  path: '/admin/users/',
+  getParentRoute: () => DashboardRoute,
+} as any)
+
+const DashboardAdminDeskIndexRoute = DashboardAdminDeskIndexImport.update({
+  id: '/admin/desk/',
+  path: '/admin/desk/',
+  getParentRoute: () => DashboardRoute,
 } as any)
 
 const AuthWorkspaceIdIndexRoute = AuthWorkspaceIdIndexImport.update({
@@ -101,29 +129,32 @@ const AuthWorkspaceIdIndexRoute = AuthWorkspaceIdIndexImport.update({
   getParentRoute: () => AuthRoute,
 } as any)
 
+const DashboardAdminWorkspaceCreateRoute =
+  DashboardAdminWorkspaceCreateImport.update({
+    id: '/admin/workspace/create',
+    path: '/admin/workspace/create',
+    getParentRoute: () => DashboardRoute,
+  } as any)
+
 const AuthWorkspaceIdBookRoute = AuthWorkspaceIdBookImport.update({
   id: '/workspace/$id/book',
   path: '/workspace/$id/book',
   getParentRoute: () => AuthRoute,
 } as any)
 
-const AuthAdminWorkspaceCreateRoute = AuthAdminWorkspaceCreateImport.update({
-  id: '/admin/workspace/create',
-  path: '/admin/workspace/create',
-  getParentRoute: () => AuthRoute,
-} as any)
+const DashboardAdminWorkspaceIdIndexRoute =
+  DashboardAdminWorkspaceIdIndexImport.update({
+    id: '/admin/workspace/$id/',
+    path: '/admin/workspace/$id/',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 
-const AuthAdminWorkspaceIdIndexRoute = AuthAdminWorkspaceIdIndexImport.update({
-  id: '/admin/workspace/$id/',
-  path: '/admin/workspace/$id/',
-  getParentRoute: () => AuthRoute,
-} as any)
-
-const AuthAdminWorkspaceIdEditRoute = AuthAdminWorkspaceIdEditImport.update({
-  id: '/admin/workspace/$id/edit',
-  path: '/admin/workspace/$id/edit',
-  getParentRoute: () => AuthRoute,
-} as any)
+const DashboardAdminWorkspaceIdEditRoute =
+  DashboardAdminWorkspaceIdEditImport.update({
+    id: '/admin/workspace/$id/edit',
+    path: '/admin/workspace/$id/edit',
+    getParentRoute: () => DashboardRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -141,6 +172,20 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: ''
       preLoaderRoute: typeof AuthImport
+      parentRoute: typeof rootRoute
+    }
+    '/_dashboard': {
+      id: '/_dashboard'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof DashboardImport
+      parentRoute: typeof rootRoute
+    }
+    '/bookings': {
+      id: '/bookings'
+      path: '/bookings'
+      fullPath: '/bookings'
+      preLoaderRoute: typeof BookingsImport
       parentRoute: typeof rootRoute
     }
     '/login': {
@@ -185,33 +230,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthHomeImport
       parentRoute: typeof AuthImport
     }
-    '/_auth/user/settings': {
-      id: '/_auth/user/settings'
-      path: '/user/settings'
-      fullPath: '/user/settings'
-      preLoaderRoute: typeof AuthUserSettingsImport
-      parentRoute: typeof AuthImport
+    '/_dashboard/admin/home': {
+      id: '/_dashboard/admin/home'
+      path: '/admin/home'
+      fullPath: '/admin/home'
+      preLoaderRoute: typeof DashboardAdminHomeImport
+      parentRoute: typeof DashboardImport
     }
-    '/_auth/admin/': {
-      id: '/_auth/admin/'
+    '/_dashboard/admin/': {
+      id: '/_dashboard/admin/'
       path: '/admin'
       fullPath: '/admin'
-      preLoaderRoute: typeof AuthAdminIndexImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/user/': {
-      id: '/_auth/user/'
-      path: '/user'
-      fullPath: '/user'
-      preLoaderRoute: typeof AuthUserIndexImport
-      parentRoute: typeof AuthImport
-    }
-    '/_auth/admin/workspace/create': {
-      id: '/_auth/admin/workspace/create'
-      path: '/admin/workspace/create'
-      fullPath: '/admin/workspace/create'
-      preLoaderRoute: typeof AuthAdminWorkspaceCreateImport
-      parentRoute: typeof AuthImport
+      preLoaderRoute: typeof DashboardAdminIndexImport
+      parentRoute: typeof DashboardImport
     }
     '/_auth/workspace/$id/book': {
       id: '/_auth/workspace/$id/book'
@@ -220,6 +251,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthWorkspaceIdBookImport
       parentRoute: typeof AuthImport
     }
+    '/_dashboard/admin/workspace/create': {
+      id: '/_dashboard/admin/workspace/create'
+      path: '/admin/workspace/create'
+      fullPath: '/admin/workspace/create'
+      preLoaderRoute: typeof DashboardAdminWorkspaceCreateImport
+      parentRoute: typeof DashboardImport
+    }
     '/_auth/workspace/$id/': {
       id: '/_auth/workspace/$id/'
       path: '/workspace/$id'
@@ -227,19 +265,40 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthWorkspaceIdIndexImport
       parentRoute: typeof AuthImport
     }
-    '/_auth/admin/workspace/$id/edit': {
-      id: '/_auth/admin/workspace/$id/edit'
+    '/_dashboard/admin/desk/': {
+      id: '/_dashboard/admin/desk/'
+      path: '/admin/desk'
+      fullPath: '/admin/desk'
+      preLoaderRoute: typeof DashboardAdminDeskIndexImport
+      parentRoute: typeof DashboardImport
+    }
+    '/_dashboard/admin/users/': {
+      id: '/_dashboard/admin/users/'
+      path: '/admin/users'
+      fullPath: '/admin/users'
+      preLoaderRoute: typeof DashboardAdminUsersIndexImport
+      parentRoute: typeof DashboardImport
+    }
+    '/_dashboard/admin/workspace/': {
+      id: '/_dashboard/admin/workspace/'
+      path: '/admin/workspace'
+      fullPath: '/admin/workspace'
+      preLoaderRoute: typeof DashboardAdminWorkspaceIndexImport
+      parentRoute: typeof DashboardImport
+    }
+    '/_dashboard/admin/workspace/$id/edit': {
+      id: '/_dashboard/admin/workspace/$id/edit'
       path: '/admin/workspace/$id/edit'
       fullPath: '/admin/workspace/$id/edit'
-      preLoaderRoute: typeof AuthAdminWorkspaceIdEditImport
-      parentRoute: typeof AuthImport
+      preLoaderRoute: typeof DashboardAdminWorkspaceIdEditImport
+      parentRoute: typeof DashboardImport
     }
-    '/_auth/admin/workspace/$id/': {
-      id: '/_auth/admin/workspace/$id/'
+    '/_dashboard/admin/workspace/$id/': {
+      id: '/_dashboard/admin/workspace/$id/'
       path: '/admin/workspace/$id'
       fullPath: '/admin/workspace/$id'
-      preLoaderRoute: typeof AuthAdminWorkspaceIdIndexImport
-      parentRoute: typeof AuthImport
+      preLoaderRoute: typeof DashboardAdminWorkspaceIdIndexImport
+      parentRoute: typeof DashboardImport
     }
   }
 }
@@ -250,88 +309,112 @@ interface AuthRouteChildren {
   AuthCreateRoute: typeof AuthCreateRoute
   AuthFaqRoute: typeof AuthFaqRoute
   AuthHomeRoute: typeof AuthHomeRoute
-  AuthUserSettingsRoute: typeof AuthUserSettingsRoute
-  AuthAdminIndexRoute: typeof AuthAdminIndexRoute
-  AuthUserIndexRoute: typeof AuthUserIndexRoute
-  AuthAdminWorkspaceCreateRoute: typeof AuthAdminWorkspaceCreateRoute
   AuthWorkspaceIdBookRoute: typeof AuthWorkspaceIdBookRoute
   AuthWorkspaceIdIndexRoute: typeof AuthWorkspaceIdIndexRoute
-  AuthAdminWorkspaceIdEditRoute: typeof AuthAdminWorkspaceIdEditRoute
-  AuthAdminWorkspaceIdIndexRoute: typeof AuthAdminWorkspaceIdIndexRoute
 }
 
 const AuthRouteChildren: AuthRouteChildren = {
   AuthCreateRoute: AuthCreateRoute,
   AuthFaqRoute: AuthFaqRoute,
   AuthHomeRoute: AuthHomeRoute,
-  AuthUserSettingsRoute: AuthUserSettingsRoute,
-  AuthAdminIndexRoute: AuthAdminIndexRoute,
-  AuthUserIndexRoute: AuthUserIndexRoute,
-  AuthAdminWorkspaceCreateRoute: AuthAdminWorkspaceCreateRoute,
   AuthWorkspaceIdBookRoute: AuthWorkspaceIdBookRoute,
   AuthWorkspaceIdIndexRoute: AuthWorkspaceIdIndexRoute,
-  AuthAdminWorkspaceIdEditRoute: AuthAdminWorkspaceIdEditRoute,
-  AuthAdminWorkspaceIdIndexRoute: AuthAdminWorkspaceIdIndexRoute,
 }
 
 const AuthRouteWithChildren = AuthRoute._addFileChildren(AuthRouteChildren)
 
+interface DashboardRouteChildren {
+  DashboardAdminHomeRoute: typeof DashboardAdminHomeRoute
+  DashboardAdminIndexRoute: typeof DashboardAdminIndexRoute
+  DashboardAdminWorkspaceCreateRoute: typeof DashboardAdminWorkspaceCreateRoute
+  DashboardAdminDeskIndexRoute: typeof DashboardAdminDeskIndexRoute
+  DashboardAdminUsersIndexRoute: typeof DashboardAdminUsersIndexRoute
+  DashboardAdminWorkspaceIndexRoute: typeof DashboardAdminWorkspaceIndexRoute
+  DashboardAdminWorkspaceIdEditRoute: typeof DashboardAdminWorkspaceIdEditRoute
+  DashboardAdminWorkspaceIdIndexRoute: typeof DashboardAdminWorkspaceIdIndexRoute
+}
+
+const DashboardRouteChildren: DashboardRouteChildren = {
+  DashboardAdminHomeRoute: DashboardAdminHomeRoute,
+  DashboardAdminIndexRoute: DashboardAdminIndexRoute,
+  DashboardAdminWorkspaceCreateRoute: DashboardAdminWorkspaceCreateRoute,
+  DashboardAdminDeskIndexRoute: DashboardAdminDeskIndexRoute,
+  DashboardAdminUsersIndexRoute: DashboardAdminUsersIndexRoute,
+  DashboardAdminWorkspaceIndexRoute: DashboardAdminWorkspaceIndexRoute,
+  DashboardAdminWorkspaceIdEditRoute: DashboardAdminWorkspaceIdEditRoute,
+  DashboardAdminWorkspaceIdIndexRoute: DashboardAdminWorkspaceIdIndexRoute,
+}
+
+const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
+  DashboardRouteChildren,
+)
+
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '': typeof AuthRouteWithChildren
+  '': typeof DashboardRouteWithChildren
+  '/bookings': typeof BookingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/create': typeof AuthCreateRoute
   '/faq': typeof AuthFaqRoute
   '/home': typeof AuthHomeRoute
-  '/user/settings': typeof AuthUserSettingsRoute
-  '/admin': typeof AuthAdminIndexRoute
-  '/user': typeof AuthUserIndexRoute
-  '/admin/workspace/create': typeof AuthAdminWorkspaceCreateRoute
+  '/admin/home': typeof DashboardAdminHomeRoute
+  '/admin': typeof DashboardAdminIndexRoute
   '/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
+  '/admin/workspace/create': typeof DashboardAdminWorkspaceCreateRoute
   '/workspace/$id': typeof AuthWorkspaceIdIndexRoute
-  '/admin/workspace/$id/edit': typeof AuthAdminWorkspaceIdEditRoute
-  '/admin/workspace/$id': typeof AuthAdminWorkspaceIdIndexRoute
+  '/admin/desk': typeof DashboardAdminDeskIndexRoute
+  '/admin/users': typeof DashboardAdminUsersIndexRoute
+  '/admin/workspace': typeof DashboardAdminWorkspaceIndexRoute
+  '/admin/workspace/$id/edit': typeof DashboardAdminWorkspaceIdEditRoute
+  '/admin/workspace/$id': typeof DashboardAdminWorkspaceIdIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '': typeof AuthRouteWithChildren
+  '': typeof DashboardRouteWithChildren
+  '/bookings': typeof BookingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/create': typeof AuthCreateRoute
   '/faq': typeof AuthFaqRoute
   '/home': typeof AuthHomeRoute
-  '/user/settings': typeof AuthUserSettingsRoute
-  '/admin': typeof AuthAdminIndexRoute
-  '/user': typeof AuthUserIndexRoute
-  '/admin/workspace/create': typeof AuthAdminWorkspaceCreateRoute
+  '/admin/home': typeof DashboardAdminHomeRoute
+  '/admin': typeof DashboardAdminIndexRoute
   '/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
+  '/admin/workspace/create': typeof DashboardAdminWorkspaceCreateRoute
   '/workspace/$id': typeof AuthWorkspaceIdIndexRoute
-  '/admin/workspace/$id/edit': typeof AuthAdminWorkspaceIdEditRoute
-  '/admin/workspace/$id': typeof AuthAdminWorkspaceIdIndexRoute
+  '/admin/desk': typeof DashboardAdminDeskIndexRoute
+  '/admin/users': typeof DashboardAdminUsersIndexRoute
+  '/admin/workspace': typeof DashboardAdminWorkspaceIndexRoute
+  '/admin/workspace/$id/edit': typeof DashboardAdminWorkspaceIdEditRoute
+  '/admin/workspace/$id': typeof DashboardAdminWorkspaceIdIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/_auth': typeof AuthRouteWithChildren
+  '/_dashboard': typeof DashboardRouteWithChildren
+  '/bookings': typeof BookingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/test': typeof TestRoute
   '/_auth/create': typeof AuthCreateRoute
   '/_auth/faq': typeof AuthFaqRoute
   '/_auth/home': typeof AuthHomeRoute
-  '/_auth/user/settings': typeof AuthUserSettingsRoute
-  '/_auth/admin/': typeof AuthAdminIndexRoute
-  '/_auth/user/': typeof AuthUserIndexRoute
-  '/_auth/admin/workspace/create': typeof AuthAdminWorkspaceCreateRoute
+  '/_dashboard/admin/home': typeof DashboardAdminHomeRoute
+  '/_dashboard/admin/': typeof DashboardAdminIndexRoute
   '/_auth/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
+  '/_dashboard/admin/workspace/create': typeof DashboardAdminWorkspaceCreateRoute
   '/_auth/workspace/$id/': typeof AuthWorkspaceIdIndexRoute
-  '/_auth/admin/workspace/$id/edit': typeof AuthAdminWorkspaceIdEditRoute
-  '/_auth/admin/workspace/$id/': typeof AuthAdminWorkspaceIdIndexRoute
+  '/_dashboard/admin/desk/': typeof DashboardAdminDeskIndexRoute
+  '/_dashboard/admin/users/': typeof DashboardAdminUsersIndexRoute
+  '/_dashboard/admin/workspace/': typeof DashboardAdminWorkspaceIndexRoute
+  '/_dashboard/admin/workspace/$id/edit': typeof DashboardAdminWorkspaceIdEditRoute
+  '/_dashboard/admin/workspace/$id/': typeof DashboardAdminWorkspaceIdIndexRoute
 }
 
 export interface FileRouteTypes {
@@ -339,62 +422,74 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | ''
+    | '/bookings'
     | '/login'
     | '/register'
     | '/test'
     | '/create'
     | '/faq'
     | '/home'
-    | '/user/settings'
+    | '/admin/home'
     | '/admin'
-    | '/user'
-    | '/admin/workspace/create'
     | '/workspace/$id/book'
+    | '/admin/workspace/create'
     | '/workspace/$id'
+    | '/admin/desk'
+    | '/admin/users'
+    | '/admin/workspace'
     | '/admin/workspace/$id/edit'
     | '/admin/workspace/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | ''
+    | '/bookings'
     | '/login'
     | '/register'
     | '/test'
     | '/create'
     | '/faq'
     | '/home'
-    | '/user/settings'
+    | '/admin/home'
     | '/admin'
-    | '/user'
-    | '/admin/workspace/create'
     | '/workspace/$id/book'
+    | '/admin/workspace/create'
     | '/workspace/$id'
+    | '/admin/desk'
+    | '/admin/users'
+    | '/admin/workspace'
     | '/admin/workspace/$id/edit'
     | '/admin/workspace/$id'
   id:
     | '__root__'
     | '/'
     | '/_auth'
+    | '/_dashboard'
+    | '/bookings'
     | '/login'
     | '/register'
     | '/test'
     | '/_auth/create'
     | '/_auth/faq'
     | '/_auth/home'
-    | '/_auth/user/settings'
-    | '/_auth/admin/'
-    | '/_auth/user/'
-    | '/_auth/admin/workspace/create'
+    | '/_dashboard/admin/home'
+    | '/_dashboard/admin/'
     | '/_auth/workspace/$id/book'
+    | '/_dashboard/admin/workspace/create'
     | '/_auth/workspace/$id/'
-    | '/_auth/admin/workspace/$id/edit'
-    | '/_auth/admin/workspace/$id/'
+    | '/_dashboard/admin/desk/'
+    | '/_dashboard/admin/users/'
+    | '/_dashboard/admin/workspace/'
+    | '/_dashboard/admin/workspace/$id/edit'
+    | '/_dashboard/admin/workspace/$id/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRouteWithChildren
+  DashboardRoute: typeof DashboardRouteWithChildren
+  BookingsRoute: typeof BookingsRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   TestRoute: typeof TestRoute
@@ -403,6 +498,8 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRouteWithChildren,
+  DashboardRoute: DashboardRouteWithChildren,
+  BookingsRoute: BookingsRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   TestRoute: TestRoute,
@@ -420,6 +517,8 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/_auth",
+        "/_dashboard",
+        "/bookings",
         "/login",
         "/register",
         "/test"
@@ -434,15 +533,25 @@ export const routeTree = rootRoute
         "/_auth/create",
         "/_auth/faq",
         "/_auth/home",
-        "/_auth/user/settings",
-        "/_auth/admin/",
-        "/_auth/user/",
-        "/_auth/admin/workspace/create",
         "/_auth/workspace/$id/book",
-        "/_auth/workspace/$id/",
-        "/_auth/admin/workspace/$id/edit",
-        "/_auth/admin/workspace/$id/"
+        "/_auth/workspace/$id/"
       ]
+    },
+    "/_dashboard": {
+      "filePath": "_dashboard.tsx",
+      "children": [
+        "/_dashboard/admin/home",
+        "/_dashboard/admin/",
+        "/_dashboard/admin/workspace/create",
+        "/_dashboard/admin/desk/",
+        "/_dashboard/admin/users/",
+        "/_dashboard/admin/workspace/",
+        "/_dashboard/admin/workspace/$id/edit",
+        "/_dashboard/admin/workspace/$id/"
+      ]
+    },
+    "/bookings": {
+      "filePath": "bookings.tsx"
     },
     "/login": {
       "filePath": "login.tsx"
@@ -465,37 +574,45 @@ export const routeTree = rootRoute
       "filePath": "_auth/home.tsx",
       "parent": "/_auth"
     },
-    "/_auth/user/settings": {
-      "filePath": "_auth/user/settings.tsx",
-      "parent": "/_auth"
+    "/_dashboard/admin/home": {
+      "filePath": "_dashboard/admin/home.tsx",
+      "parent": "/_dashboard"
     },
-    "/_auth/admin/": {
-      "filePath": "_auth/admin/index.tsx",
-      "parent": "/_auth"
-    },
-    "/_auth/user/": {
-      "filePath": "_auth/user/index.tsx",
-      "parent": "/_auth"
-    },
-    "/_auth/admin/workspace/create": {
-      "filePath": "_auth/admin/workspace/create.tsx",
-      "parent": "/_auth"
+    "/_dashboard/admin/": {
+      "filePath": "_dashboard/admin/index.tsx",
+      "parent": "/_dashboard"
     },
     "/_auth/workspace/$id/book": {
       "filePath": "_auth/workspace/$id/book.tsx",
       "parent": "/_auth"
     },
+    "/_dashboard/admin/workspace/create": {
+      "filePath": "_dashboard/admin/workspace/create.tsx",
+      "parent": "/_dashboard"
+    },
     "/_auth/workspace/$id/": {
       "filePath": "_auth/workspace/$id/index.tsx",
       "parent": "/_auth"
     },
-    "/_auth/admin/workspace/$id/edit": {
-      "filePath": "_auth/admin/workspace/$id/edit.tsx",
-      "parent": "/_auth"
+    "/_dashboard/admin/desk/": {
+      "filePath": "_dashboard/admin/desk/index.tsx",
+      "parent": "/_dashboard"
     },
-    "/_auth/admin/workspace/$id/": {
-      "filePath": "_auth/admin/workspace/$id/index.tsx",
-      "parent": "/_auth"
+    "/_dashboard/admin/users/": {
+      "filePath": "_dashboard/admin/users/index.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/admin/workspace/": {
+      "filePath": "_dashboard/admin/workspace/index.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/admin/workspace/$id/edit": {
+      "filePath": "_dashboard/admin/workspace/$id/edit.tsx",
+      "parent": "/_dashboard"
+    },
+    "/_dashboard/admin/workspace/$id/": {
+      "filePath": "_dashboard/admin/workspace/$id/index.tsx",
+      "parent": "/_dashboard"
     }
   }
 }

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { AppBar, Toolbar, Typography, Box } from "@mui/material";
+import { AppBar, Toolbar, Typography, Box, Button } from "@mui/material";
 import { useNavigate } from "@tanstack/react-router";
 import ProfileMenu from "../profile/ProfileMenu.tsx";
 import { AuthContext } from "../../context/auth/AuthContext.ts";
@@ -17,34 +17,49 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
     >
       <AppBar
         position="static"
-        elevation={0}
-        sx={{ bgcolor: "white", color: "black", width: "100%" }}
+        // elevation={2}
+        sx={{
+          bgcolor: "white",
+          color: "black",
+          width: "100%",
+          boxShadow: "0px 4px 12px rgba(0, 0, 0, 0.15)",
+          justifyContent: "center",
+          display: "flex",
+          alignItems: "center",
+        }}
       >
         <Toolbar
+          disableGutters={true}
           sx={{
             justifyContent: "space-between",
-            gap: 2,
             flexWrap: "wrap",
-            px: { xs: 2, md: 4 },
             py: 1.5,
+            pb: 4,
+            width: "90%",
+            px: 0,
+            // mx: "auto",
           }}
         >
           {/* Logo / Title */}
-          <Typography
-            variant="h6"
-            component="div"
-            onClick={() => navigate({ to: "/home" })}
-            sx={{
-              fontWeight: 600,
-              transition: "transform 0.2s ease",
-              "&:hover": {
-                cursor: "pointer",
-                transform: "scale(1.05)",
-              },
-            }}
-          >
-            Office Booking
-          </Typography>
+          <Button>
+            <Typography
+              variant="h6"
+              component="div"
+              onClick={() => navigate({ to: "/home" })}
+              sx={{
+                margin: 0,
+                padding: 0,
+                fontWeight: 600,
+                transition: "transform 0.2s ease",
+                "&:hover": {
+                  cursor: "pointer",
+                  transform: "scale(1.05)",
+                },
+              }}
+            >
+              Office Booking
+            </Typography>
+          </Button>
 
           {/* Optional: Nav Links or Actions */}
           <Box
@@ -55,25 +70,44 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
             }}
           >
             {/* Example placeholder nav links */}
-            <Typography
-              variant="body1"
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                navigate({ to: "/home" });
-              }}
-            >
-              Bookings
-            </Typography>
-            <Typography
-              variant="body1"
-              sx={{ cursor: "pointer" }}
-              onClick={() => {
-                navigate({ to: "/faq" });
-              }}
-            >
-              FAQ
-            </Typography>
-            {auth?.user?.roles.includes("User") && (
+            <Button>
+              <Typography
+                variant="body1"
+                sx={{
+                  cursor: "pointer",
+                  transition: "transform 0.2s ease",
+                  "&:hover": {
+                    cursor: "pointer",
+                    transform: "scale(1.2)",
+                  },
+                }}
+                onClick={() => {
+                  navigate({ to: "/home" });
+                }}
+              >
+                Bookings
+              </Typography>
+            </Button>
+            <Button>
+              <Typography
+                variant="body1"
+                sx={{
+                  cursor: "pointer",
+                  transition: "transform 0.2s ease",
+                  "&:hover": {
+                    cursor: "pointer",
+                    transform: "scale(1.3)",
+                  },
+                }}
+                onClick={() => {
+                  navigate({ to: "/faq" });
+                }}
+              >
+                FAQ
+              </Typography>
+            </Button>
+
+            {auth?.user?.roles.includes("Admin") && (
               <Typography
                 variant="body1"
                 sx={{ cursor: "pointer" }}
@@ -103,13 +137,13 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
       {/* Main Content */}
       <Box
         sx={{
-          my: 4,
           flex: 1,
           position: "relative",
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
           flexDirection: "column",
+          // bgcolor: "white",
         }}
       >
         {children}

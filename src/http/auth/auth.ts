@@ -3,10 +3,12 @@ import { authProvider } from "../../authProvider.ts";
 import { AuthRequest, RegisterRequest } from "./data.ts";
 import { useNavigate } from "@tanstack/react-router";
 import { useNotification } from "../../context/notifications/useNotifications.ts";
+import { useContext } from "react";
+import { AuthContext } from "../../context/auth/AuthContext.ts";
 
 export function useLogin() {
   const { open } = useNotification();
-
+  const auth = useContext(AuthContext);
   return useMutation({
     mutationFn: async (data: AuthRequest) => {
       const response = await authProvider.login(data);
@@ -15,7 +17,9 @@ export function useLogin() {
       }
       return response;
     },
-    onSuccess: () => {
+    onSuccess: async () => {
+      const identity = await authProvider.getIdentity();
+      auth?.login(identity);
       open("Login successful!", "success");
     },
     onError: () => {
@@ -25,11 +29,13 @@ export function useLogin() {
 }
 
 export const useLogout = () => {
+  const auth = useContext(AuthContext);
   const { open } = useNotification();
   const navigate = useNavigate();
   const logout = async () => {
     try {
       await authProvider.logout();
+      auth?.logout();
       open("Logout successful!", "success");
       await navigate({ to: "/login" }); // Notification on logout success
     } catch (error) {

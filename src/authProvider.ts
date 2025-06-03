@@ -5,6 +5,7 @@ import {
 } from "./http/auth/data.ts";
 import { apiClient, queryClient } from "./util/client.ts";
 import { ApplicationHttpError } from "./util/error.ts";
+import { AuthUser } from "./context/auth/AuthContext.ts";
 
 // let username: string | undefined;
 let prevPassword: string | undefined;
@@ -22,17 +23,14 @@ export const authProvider = {
       // if (data.remember || prevRemember) {
       //     localStorage.setItem('refreshToken', res.data.refreshToken)
       // }
-      // const authData = await queryClient.ensureQueryData({
-      //     queryKey: ['auth', 'identity'],
-      //     queryFn: () => authProvider.getIdentity(),
-      // })
-      const identity = await authProvider.getIdentity();
-      console.log(identity);
-      prevPassword = undefined;
+      const authData = await queryClient.ensureQueryData({
+        queryKey: ["auth", "identity"],
+        queryFn: () => authProvider.getIdentity(),
+      });
 
       return {
         success: true,
-        user: identity,
+        user: authData,
       };
     } catch (error) {
       const appError = error as ApplicationHttpError<unknown, unknown>;
@@ -67,8 +65,21 @@ export const authProvider = {
       };
     }
   },
-  getIdentity: async () => {
+  getIdentity: async (): Promise<AuthUser> => {
     const response = await apiClient.get("/user");
     return response.data;
   },
+  // onError: async (error) => {
+  //   console.error(error);
+  //   if (isApplicationHttpError(error) && error.statusCode == 401) {
+  //     localStorage.removeItem("accessToken");
+  //     localStorage.removeItem("refreshToken");
+  //     return {
+  //       error: error,
+  //       redirectTo: "/login",
+  //     };
+  //   } else {
+  //     return { error };
+  //   }
+  // },
 };

@@ -1,26 +1,16 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { Box, Button, Paper, CircularProgress } from "@mui/material";
-import {
-  useDeleteWorkspace,
-  useGetAllWorkspaces,
-} from "../../../http/workspace/data.ts";
-import WorkspaceCard from "../../../components/WorkspaceCard.tsx";
+import { useGetAllWorkspaces } from "../../../../http/workspace/data";
+import { Box, Button, CircularProgress, Paper } from "@mui/material";
+import WorkspaceCard from "../../../../components/WorkspaceCard.tsx";
+import { DeleteWorkspaceButton } from "../../../../resources/workspaces/DeleteButton.tsx";
 
-// Define route
-export const Route = createFileRoute("/_auth/admin/")({
+export const Route = createFileRoute("/_dashboard/admin/workspace/")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const { mutate: deleteWorkspace, isPending } = useDeleteWorkspace();
   const { data, isLoading } = useGetAllWorkspaces();
   const navigate = useNavigate();
-
-  const handleDelete = (id: string) => {
-    deleteWorkspace(id, {
-      onSuccess: async () => {},
-    });
-  };
 
   if (isLoading) {
     return (
@@ -52,7 +42,7 @@ function RouteComponent() {
         width: "100%",
       }}
     >
-      <Box sx={{ flex: 1, padding: 3 }}>
+      <Box>
         <Paper sx={{ padding: 3 }}>
           <Box sx={{ display: "flex", justifyContent: "flex-end", mb: 2 }}>
             <Button
@@ -86,6 +76,7 @@ function RouteComponent() {
                     description={workspace.description}
                     imageUrl={workspace.imageUrl}
                     id={workspace.id.toString()}
+                    admin={true}
                   />
                   <Box
                     sx={{
@@ -94,18 +85,20 @@ function RouteComponent() {
                       mt: 1,
                     }}
                   >
-                    <Button fullWidth variant="contained" color="primary">
-                      Edit
-                    </Button>
                     <Button
                       fullWidth
                       variant="contained"
-                      color="error"
-                      disabled={isPending}
-                      onClick={() => handleDelete(workspace.id.toString())}
+                      color="info"
+                      onClick={() =>
+                        navigate({
+                          to: "/admin/workspace/$id/edit",
+                          params: { id: workspace.id.toString() },
+                        })
+                      }
                     >
-                      Delete
+                      Edit
                     </Button>
+                    <DeleteWorkspaceButton id={workspace.id.toString()} />
                   </Box>
                 </Box>
               ))

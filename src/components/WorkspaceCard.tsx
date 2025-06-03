@@ -14,6 +14,7 @@ type WorkspaceCardProps = {
   description: string;
   imageUrl: string;
   id: string;
+  admin?: boolean;
 };
 
 const WorkspaceCard = ({
@@ -22,13 +23,21 @@ const WorkspaceCard = ({
   description,
   imageUrl,
   id,
+  admin,
 }: WorkspaceCardProps) => {
   const navigate = useNavigate();
-  const onViewDetails = () => {
-    navigate({
-      to: "/workspace/$id",
-      params: { id: id },
-    });
+  const onViewDetails = async () => {
+    if (admin) {
+      await navigate({
+        to: "/admin/workspace/$id",
+        params: { id: id },
+      });
+    } else {
+      await navigate({
+        to: "/workspace/$id",
+        params: { id: id },
+      });
+    }
   };
 
   return (
@@ -38,11 +47,21 @@ const WorkspaceCard = ({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-between",
+        height: 360,
       }}
     >
       <CardMedia component="img" height="160" image={imageUrl} alt={name} />
-      <CardContent>
-        <Typography variant="h6" gutterBottom>
+      <CardContent sx={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          sx={{
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            margin: 0,
+            padding: 0,
+          }}
+        >
           {name}
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -63,7 +82,12 @@ const WorkspaceCard = ({
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" variant="outlined" onClick={onViewDetails}>
+        <Button
+          size="small"
+          variant="outlined"
+          onClick={onViewDetails}
+          sx={{ width: "100%" }}
+        >
           View Details
         </Button>
       </CardActions>

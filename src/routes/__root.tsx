@@ -1,45 +1,38 @@
-import {
-  Outlet,
-  createRootRouteWithContext,
-  useNavigate,
-  useLocation,
-} from "@tanstack/react-router";
+import { Outlet, createRootRouteWithContext } from "@tanstack/react-router";
 import { TanStackRouterDevtools } from "@tanstack/react-router-devtools";
 import type { QueryClient } from "@tanstack/react-query";
-import { CircularProgress } from "@mui/material";
 import { AuthContext } from "../context/auth/AuthContext.ts";
-import { BareBonesLayout } from "../components/layout/BareBonesLayout.tsx";
 import NotFound from "../components/NotFound/NotFound.tsx";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterLuxon } from "@mui/x-date-pickers/AdapterLuxon";
 import { useEffect } from "react";
+import { BaseLayout } from "../components/Layout/BaseLayout.tsx";
 
 export const Route = createRootRouteWithContext<{
   queryClient: QueryClient;
   auth?: AuthContext;
 }>()({
   component: RootComponent,
-  pendingComponent: () => <CircularProgress color="inherit" />,
   notFoundComponent: () => {
     return (
-      <BareBonesLayout>
+      <BaseLayout>
         <NotFound />
-      </BareBonesLayout>
+      </BaseLayout>
     );
   },
 });
 
 function RootComponent() {
-  const navigate = useNavigate();
-
-  const location = useLocation(); // Get the current route location
-
   useEffect(() => {
-    // If the current path is '/', redirect to '/home'
-    if (location.pathname === "/") {
-      navigate({ to: "/home" });
+    const loader = document.getElementById("loader");
+    const loaderStyle = document.getElementById("loader-style");
+    if (loader) {
+      loader.remove();
     }
-  }, [location, navigate]);
+    if (loaderStyle) {
+      loaderStyle.remove();
+    }
+  }, []);
   return (
     <>
       <LocalizationProvider dateAdapter={AdapterLuxon}>
