@@ -55,6 +55,7 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
               gap: 3,
             }}
           >
+            {/* Example placeholder nav links */}
             <Button>
               <Typography
                 variant="body1"
@@ -91,15 +92,19 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
                 FAQ
               </Typography>
             </Button>
+
             {auth?.user?.roles.includes("Admin") && (
               <Typography
                 variant="body1"
                 sx={{ cursor: "pointer" }}
-                onClick={() => navigate({ to: "/admin" })}
+                onClick={() => {
+                  navigate({ to: "/admin" });
+                }}
               >
                 ADMIN
               </Typography>
             )}
+
             <ProfileMenu />
           </Box>
 
