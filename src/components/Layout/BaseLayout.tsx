@@ -7,6 +7,7 @@ import { AuthContext } from "../../context/auth/AuthContext.ts";
 export function BaseLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
+  console.log(auth);
 
   return (
     <Box
@@ -54,29 +55,37 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
               gap: 3,
             }}
           >
-            <Button onClick={() => navigate({ to: "/home" })}>
+            <Button>
               <Typography
                 variant="body1"
                 sx={{
                   cursor: "pointer",
                   transition: "transform 0.2s ease",
                   "&:hover": {
+                    cursor: "pointer",
                     transform: "scale(1.2)",
                   },
+                }}
+                onClick={() => {
+                  navigate({ to: "/home" });
                 }}
               >
                 Bookings
               </Typography>
             </Button>
-            <Button onClick={() => navigate({ to: "/faq" })}>
+            <Button>
               <Typography
                 variant="body1"
                 sx={{
                   cursor: "pointer",
                   transition: "transform 0.2s ease",
                   "&:hover": {
+                    cursor: "pointer",
                     transform: "scale(1.3)",
                   },
+                }}
+                onClick={() => {
+                  navigate({ to: "/faq" });
                 }}
               >
                 FAQ
@@ -94,7 +103,6 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
             <ProfileMenu />
           </Box>
 
-          {/* Mobile Profile Menu */}
           <Box
             sx={{
               display: { xs: "flex", md: "none" },
