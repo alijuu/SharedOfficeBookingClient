@@ -8,6 +8,7 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   console.log(auth);
+
   return (
     <Box
       display="flex"
@@ -54,22 +55,17 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
               gap: 3,
             }}
           >
-            {/* Example placeholder nav links */}
             <Typography
               variant="body1"
               sx={{ cursor: "pointer" }}
-              onClick={() => {
-                navigate({ to: "/home" });
-              }}
+              onClick={() => navigate({ to: "/home" })}
             >
               Bookings
             </Typography>
             <Typography
               variant="body1"
               sx={{ cursor: "pointer" }}
-              onClick={() => {
-                navigate({ to: "/faq" });
-              }}
+              onClick={() => navigate({ to: "/faq" })}
             >
               FAQ
             </Typography>
@@ -77,14 +73,11 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
               <Typography
                 variant="body1"
                 sx={{ cursor: "pointer" }}
-                onClick={() => {
-                  navigate({ to: "/admin" });
-                }}
+                onClick={() => navigate({ to: "/admin" })}
               >
                 ADMIN
               </Typography>
             )}
-
             <ProfileMenu />
           </Box>
 
@@ -103,14 +96,12 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
       {/* Main Content */}
       <Box
         sx={{
-          my: 4,
           flex: 1,
-          width: '100%',
-          //position: "relative",
-          //display: "flex",
-         // justifyContent: "center",
-         //alignItems: "center",
-         // flexDirection: "column",
+          position: "relative",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          flexDirection: "column",
         }}
       >
         {children}
