@@ -131,5 +131,6 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
         </Typography>
       </Box>
     </Box>
+
   );
 }
