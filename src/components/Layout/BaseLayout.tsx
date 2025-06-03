@@ -8,6 +8,7 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
   const navigate = useNavigate();
   const auth = useContext(AuthContext);
   console.log(auth);
+
   return (
     <Box
       display="flex"
@@ -61,7 +62,7 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
             </Typography>
           </Button>
 
-          {/* Optional: Nav Links or Actions */}
+          {/* Nav Links / Actions */}
           <Box
             sx={{
               display: { xs: "none", md: "flex" },
@@ -167,3 +168,4 @@ export function BaseLayout({ children }: { children: React.ReactNode }) {
     </Box>
   );
 }
+

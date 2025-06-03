@@ -17,6 +17,7 @@ import { Route as LoginImport } from './routes/login'
 import { Route as BookingsImport } from './routes/bookings'
 import { Route as DashboardImport } from './routes/_dashboard'
 import { Route as AuthImport } from './routes/_auth'
+import { Route as LandingPageImport } from './routes/LandingPage'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthHomeImport } from './routes/_auth/home'
 import { Route as AuthFaqImport } from './routes/_auth/faq'
@@ -65,6 +66,12 @@ const DashboardRoute = DashboardImport.update({
 
 const AuthRoute = AuthImport.update({
   id: '/_auth',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const LandingPageRoute = LandingPageImport.update({
+  id: '/LandingPage',
+  path: '/LandingPage',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -165,6 +172,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/LandingPage': {
+      id: '/LandingPage'
+      path: '/LandingPage'
+      fullPath: '/LandingPage'
+      preLoaderRoute: typeof LandingPageImport
       parentRoute: typeof rootRoute
     }
     '/_auth': {
@@ -351,6 +365,7 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/LandingPage': typeof LandingPageRoute
   '': typeof DashboardRouteWithChildren
   '/bookings': typeof BookingsRoute
   '/login': typeof LoginRoute
@@ -373,6 +388,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/LandingPage': typeof LandingPageRoute
   '': typeof DashboardRouteWithChildren
   '/bookings': typeof BookingsRoute
   '/login': typeof LoginRoute
@@ -396,6 +412,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/LandingPage': typeof LandingPageRoute
   '/_auth': typeof AuthRouteWithChildren
   '/_dashboard': typeof DashboardRouteWithChildren
   '/bookings': typeof BookingsRoute
@@ -421,6 +438,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/LandingPage'
     | ''
     | '/bookings'
     | '/login'
@@ -442,6 +460,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/LandingPage'
     | ''
     | '/bookings'
     | '/login'
@@ -463,6 +482,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/LandingPage'
     | '/_auth'
     | '/_dashboard'
     | '/bookings'
@@ -487,6 +507,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LandingPageRoute: typeof LandingPageRoute
   AuthRoute: typeof AuthRouteWithChildren
   DashboardRoute: typeof DashboardRouteWithChildren
   BookingsRoute: typeof BookingsRoute
@@ -497,6 +518,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LandingPageRoute: LandingPageRoute,
   AuthRoute: AuthRouteWithChildren,
   DashboardRoute: DashboardRouteWithChildren,
   BookingsRoute: BookingsRoute,
@@ -516,6 +538,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/LandingPage",
         "/_auth",
         "/_dashboard",
         "/bookings",
@@ -526,6 +549,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/LandingPage": {
+      "filePath": "LandingPage.tsx"
     },
     "/_auth": {
       "filePath": "_auth.tsx",
