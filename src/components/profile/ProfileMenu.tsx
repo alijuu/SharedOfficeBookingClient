@@ -9,6 +9,7 @@ import {
 } from "@mui/material";
 import { useLogout } from "../../http/auth/auth.ts";
 import { AuthContext } from "../../context/auth/AuthContext.ts";
+import { useNavigate } from "@tanstack/react-router";
 
 const ProfileMenu: React.FC = () => {
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -23,16 +24,32 @@ const ProfileMenu: React.FC = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const navigate = useNavigate();
 
   return (
     <Box sx={{ display: "flex", alignItems: "center" }}>
       <IconButton onClick={handleMenuClick}>
         <Avatar alt="User Profile" src="/static/images/avatar/1.jpg" />
       </IconButton>
-      <Typography variant="body1" sx={{ ml: 1 }}>
+      <Typography
+        variant="body1"
+        sx={{ ml: 1 }}
+        onClick={() => {
+          navigate({ to: "/home" });
+        }}
+      >
         {user?.username}
       </Typography>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+        {user?.username === "Ali123" && (
+          <MenuItem
+            onClick={() => {
+              navigate({ to: "/admin" });
+            }}
+          >
+            ADMIN
+          </MenuItem>
+        )}
         <MenuItem onClick={logout}>Log out</MenuItem>
       </Menu>
     </Box>

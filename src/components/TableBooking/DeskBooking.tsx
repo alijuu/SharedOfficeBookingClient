@@ -1,4 +1,4 @@
-import { Autocomplete, Box, TextField, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import { DeskBook } from "../../resources/desk/DeskBook.tsx";
 
 export type Desk = {
@@ -13,13 +13,7 @@ type DeskBookingProps = {
   onDeskClick?: (desk: Desk) => void;
 };
 
-export type DeskStatus = "available" | "out of order";
-//
-// export interface Desk {
-//   row: number;
-//   col: number;
-//   status: DeskStatus;
-// }
+export type DeskStatus = "available" | "partial" | "booked";
 
 export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
   if (!grid || grid.length === 0 || !grid[0]) {
@@ -28,16 +22,6 @@ export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
 
   return (
     <Box sx={{}}>
-      <Autocomplete
-        disablePortal
-        options={["1"]}
-        defaultValue={"1"}
-        disableClearable
-        disabled={true}
-        sx={{ width: 100, marginBottom: 2 }}
-        renderInput={(params) => <TextField {...params} label="Floor" />}
-      />
-
       <Box
         display="grid"
         gridTemplateColumns={`repeat(${grid[0].length}, minmax(40px, 4vw))`}
@@ -54,7 +38,6 @@ export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
               return <Box key={`${rowIdx}-${colIdx}`} />;
             }
 
-            // Render wall if desk.id === -1
             if (desk.id === -1) {
               return (
                 <Box
@@ -69,7 +52,7 @@ export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
               );
             }
 
-            const isClickable = desk.status === "available";
+            const isClickable = true;
 
             return (
               <Box
@@ -84,10 +67,10 @@ export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
                   },
                 }}
               >
-                <DeskBook id={desk.id.toString()} />
+                <DeskBook id={desk.id.toString()} status={desk.status} />
               </Box>
             );
-          })
+          }),
         )}
       </Box>
     </Box>
