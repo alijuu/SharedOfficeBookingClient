@@ -23,7 +23,7 @@ export interface Booking {
   durationHrs: number;
   price: number;
   currency: string;
-  status: "confirmed" | "cancelled";
+  status: "past" | "upcoming";
 }
 
 interface AppointmentDetailsProps {
@@ -31,9 +31,12 @@ interface AppointmentDetailsProps {
   onCancel: (id: string) => Promise<void>;
 }
 
-export function AppointmentDetails({ booking, onCancel }: AppointmentDetailsProps) {
+export function AppointmentDetails({
+  booking,
+  onCancel,
+}: AppointmentDetailsProps) {
   const [confirmOpen, setConfirmOpen] = React.useState(false);
-  const isConfirmed = booking.status === "confirmed";
+  const isConfirmed = booking.status === "upcoming";
 
   const handleClickCancel = () => setConfirmOpen(true);
   const handleClose = () => setConfirmOpen(false);
@@ -89,7 +92,12 @@ export function AppointmentDetails({ booking, onCancel }: AppointmentDetailsProp
             component="img"
             src={booking.thumbnailUrl}
             alt="Office thumbnail"
-            sx={{ width: 120, height: 120, borderRadius: 1, objectFit: "cover" }}
+            sx={{
+              width: 120,
+              height: 120,
+              borderRadius: 1,
+              objectFit: "cover",
+            }}
           />
           <Typography variant="subtitle1" fontWeight="bold">
             {booking.location}
@@ -98,7 +106,11 @@ export function AppointmentDetails({ booking, onCancel }: AppointmentDetailsProp
             <IconButton size="small" sx={{ bgcolor: "#f5f5f5" }}>
               <LocationOnIcon />
             </IconButton>
-            <IconButton size="small" sx={{ bgcolor: "#f5f5f5" }} onClick={handleClickCancel}>
+            <IconButton
+              size="small"
+              sx={{ bgcolor: "#f5f5f5" }}
+              onClick={handleClickCancel}
+            >
               <CancelIcon />
             </IconButton>
           </Box>
@@ -136,10 +148,10 @@ export function AppointmentDetails({ booking, onCancel }: AppointmentDetailsProp
             Cancellation policy
           </Typography>
           <Typography variant="body2">
-            Cancel for free anytime in advance, otherwise you will be charged{' '}
+            Cancel for free anytime in advance, otherwise you will be charged{" "}
             <Box component="span" fontWeight="bold">
               100%
-            </Box>{' '}
+            </Box>{" "}
             of the service price for not showing up.
           </Typography>
         </Box>
@@ -147,9 +159,7 @@ export function AppointmentDetails({ booking, onCancel }: AppointmentDetailsProp
 
       {/* Confirmation Dialog */}
       <Dialog open={confirmOpen} onClose={handleClose}>
-        <DialogTitle>
-          Are you sure you want to cancel this booking?
-        </DialogTitle>
+        <DialogTitle>Are you sure you want to cancel this booking?</DialogTitle>
         <DialogActions>
           <Button onClick={handleClose}>No</Button>
           <Button color="error" onClick={handleConfirm}>

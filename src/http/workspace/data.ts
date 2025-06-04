@@ -6,6 +6,7 @@ import {
   WorkspacesResponse,
 } from "../../resources/workspaces/model.ts";
 import { useNotification } from "../../context/notifications/useNotifications.ts";
+import { Booking } from "../../components/AppointmentDetails.tsx";
 
 export interface CreateWorkspaceDto {
   name: string;
@@ -37,6 +38,12 @@ export interface CreateBooking {
   endTime: string;
 }
 
+interface ServiceResponse<T> {
+  data: T;
+  success: boolean;
+  message: string;
+}
+
 export function useCreateWorkspace() {
   const { open } = useNotification();
   return useMutation({
@@ -59,7 +66,7 @@ export function useEditWorkspace() {
     mutationFn: async (data: UpdateWorkspace) => {
       const response = await apiClient.put(
         `/api/workspaces/update/${data.id}`,
-        data.workspace,
+        data.workspace
       );
       return response.data;
     },
@@ -137,11 +144,22 @@ export function useGetAvailableDesk(id: string) {
     queryKey: ["desks/available", id],
     queryFn: async () => {
       const { data } = await apiClient.get(
-        `/api/desk/workspace/${id}/booked-now`,
+        `/api/desk/workspace/${id}/booked-now`
       );
       return data;
     },
   });
 }
+
+export const useGetUserBookings = createQueryHook<Booking[]>(() => ({
+  queryKey: ["user-bookings"],
+  queryFn: async () => {
+    const response = await apiClient.request<ServiceResponse<Booking[]>>({
+      method: "GET",
+      url: "/api/booking/user",
+    });
+    return response.data.data;
+  },
+}));
 
 // export const useGetBookingDest = createQueryHook<>();
