@@ -1,9 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
-
-export const Route = createFileRoute("/")({
-  component: LandingPage,
-});
-
+import { BaseLayout } from "../Layout/BaseLayout.tsx";
 import Box from "@mui/material/Box";
 import Container from "@mui/material/Container";
 import Typography from "@mui/material/Typography";
@@ -11,11 +6,11 @@ import Button from "@mui/material/Button";
 import { styled } from "@mui/material/styles";
 import OfficePhoto from "../assets/images/office.png";
 import PlaceholderImage from "../assets/images/placeholder.png";
+
 import WorkspacePremiumIcon from "@mui/icons-material/WorkspacePremium";
 import PeopleIcon from "@mui/icons-material/People";
 import MeetingRoomIcon from "@mui/icons-material/MeetingRoom";
 import PaymentIcon from "@mui/icons-material/Payment";
-import { BaseLayout } from "../components/Layout/BaseLayout.tsx";
 
 export interface Feature {
   title: string;

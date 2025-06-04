@@ -104,7 +104,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           },
         }}
       >
-        <Toolbar sx={{ marginLeft: "auto" }} disableGutters>
+        <Toolbar sx={{ marginLeft: "auto" }}>
           <IconButton
             color="inherit"
             aria-label="open drawer"

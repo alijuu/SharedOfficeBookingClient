@@ -1,4 +1,10 @@
-import { RefObject, useContext, useImperativeHandle, useState } from "react";
+import {
+  RefObject,
+  useEffect,
+  useImperativeHandle,
+  useMemo,
+  useState,
+} from "react";
 import {
   Backdrop,
   Box,
@@ -19,8 +25,7 @@ import { DialogStateRef } from "../../util/dialog.ts";
 import { Controller, useForm } from "react-hook-form";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { DateTime } from "luxon";
-import { useCreateBooking } from "../../http/workspace/data.ts";
-import { AuthContext } from "../../context/auth/AuthContext.ts";
+import { useCreateBooking, useGetBooking } from "../../http/workspace/data.ts";
 import { ErrorOutline } from "@mui/icons-material";
 import { useNavigate } from "@tanstack/react-router";
 
@@ -37,15 +42,16 @@ function DeskBook({
   deskId: string;
   dialogRef: RefObject<DialogStateRef<(id?: string) => void>>;
 }) {
-  const auth = useContext(AuthContext);
   const navigate = useNavigate();
+  const { data } = useGetBooking(deskId);
+  console.log(data);
   type bookTable = {
     startTime: DateTime;
     endTime: DateTime;
     deskId: string;
     type: string;
   };
-  const { control, handleSubmit, watch } = useForm<bookTable>({
+  const { control, handleSubmit, watch, setValue } = useForm<bookTable>({
     defaultValues: {
       startTime: DateTime.now().set({
         hour: 9,
@@ -65,8 +71,8 @@ function DeskBook({
       ...data,
       startTime: data.startTime?.toUTC().toFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"),
       endTime: data.endTime?.toUTC().toFormat("yyyy-MM-dd'T'HH:mm:ss'Z'"),
-      userId: auth?.user?.id ?? "",
-      type: 0,
+      type: data.type === "Hour" ? 0 : data.type === "Half-day" ? 1 : 2,
+      deskId: parseInt(data.deskId),
     };
     mutate(payload, {
       onSuccess: async () => {
@@ -74,10 +80,11 @@ function DeskBook({
         await navigate({ to: "/home" });
       },
     });
-    console.log(payload, "SADS");
   };
+
   const bookingType = watch("type");
-  console.log(bookingType);
+  const startTime = watch("startTime");
+
   const minDateTime = DateTime.local().set({
     hour: 9,
     minute: 0,
@@ -90,6 +97,38 @@ function DeskBook({
     second: 0,
     millisecond: 0,
   });
+
+  const newMaxTime = useMemo(() => {
+    if (bookingType === "Hour") {
+      return DateTime.local().set({
+        hour: 17,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      });
+    }
+    if (bookingType === "Half-day") {
+      return DateTime.local().set({
+        hour: 13,
+        minute: 0,
+        second: 0,
+        millisecond: 0,
+      });
+    }
+  }, [bookingType]);
+
+  // Handle automatic time settings for "Half-day" and "Full-day"
+  useEffect(() => {
+    if (bookingType === "Half-day" && startTime) {
+      const newEndTime = startTime.plus({ hours: 4 });
+      if (newEndTime.hour <= 17) {
+        setValue("endTime", newEndTime);
+      }
+    } else if (bookingType === "Full-day") {
+      const end = startTime.set({ hour: 17, minute: 0 });
+      setValue("endTime", end);
+    }
+  }, [bookingType, startTime, setValue]);
 
   return (
     <>
@@ -138,7 +177,7 @@ function DeskBook({
                     ampm={false}
                     views={["year", "month", "day", "hours"]}
                     minDateTime={minDateTime}
-                    maxTime={maxTime}
+                    maxTime={newMaxTime}
                     slotProps={{ textField: { fullWidth: true } }}
                   />
                 )}
@@ -168,7 +207,7 @@ function DeskBook({
                   sx={{
                     display: "flex",
                     flexDirection: "row",
-                    justifyContent: "flex-start", // Align to the left
+                    justifyContent: "flex-start",
                     alignItems: "center",
                     color: "error.main",
                     mt: 1,
@@ -205,16 +244,13 @@ function DeskBook({
 
 export function DeskBookFormDialog({ deskId, ref }: DeskBookFormDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
-  // const [id, setId] = useState<string>();
   useImperativeHandle(ref, () => {
     const obj: DialogStateRef<(id?: string) => void> = {
       preventClose: false,
       openDialog: () => {
-        // setId(id);
         setIsOpen(true);
       },
       closeDialog: () => {
-        // setId(undefined);
         setIsOpen(false);
       },
       setPreventClose: (value) => {

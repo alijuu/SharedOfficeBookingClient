@@ -13,7 +13,7 @@ type DeskBookingProps = {
   onDeskClick?: (desk: Desk) => void;
 };
 
-export type DeskStatus = "available" | "out of order";
+export type DeskStatus = "available" | "partial" | "booked";
 
 export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
   if (!grid || grid.length === 0 || !grid[0]) {
@@ -52,7 +52,7 @@ export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
               );
             }
 
-            const isClickable = desk.status === "available";
+            const isClickable = true;
 
             return (
               <Box
@@ -67,7 +67,7 @@ export function DeskBooking({ grid, onDeskClick }: DeskBookingProps) {
                   },
                 }}
               >
-                <DeskBook id={desk.id.toString()} />
+                <DeskBook id={desk.id.toString()} status={desk.status} />
               </Box>
             );
           }),
