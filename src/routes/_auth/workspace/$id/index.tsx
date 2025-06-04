@@ -3,6 +3,7 @@ import WorkspaceDetails from "../../../../components/WorkspaceDetails.tsx";
 import { Box, CircularProgress, Typography } from "@mui/material";
 import {
   useGetAllWorkspaces,
+  useGetAvailableDesk,
   useGetWorkspace,
 } from "../../../../http/workspace/data.ts";
 import {
@@ -11,6 +12,7 @@ import {
 } from "../../../../components/TableBooking/DeskBooking.tsx";
 import { Workspace } from "../../../../resources/workspaces/model.ts";
 import WorkspaceCard from "../../../../components/WorkspaceCard.tsx";
+import { useMemo } from "react";
 export const Route = createFileRoute("/_auth/workspace/$id/")({
   component: RouteComponent,
 });
@@ -30,22 +32,41 @@ function renderItem(workspace: Workspace) {
 function RouteComponent() {
   const { id } = Route.useParams();
   const { data } = useGetWorkspace({ id: id });
-  // const { data: freeDesks } = useGetAvailableDesk(id);
+  const { data: freeDesksResponse, isLoading: isFetchingDesks } =
+    useGetAvailableDesk(id);
+  const freeDesks = useMemo(() => {
+    return freeDesksResponse?.data ?? [];
+  }, [freeDesksResponse]);
+  console.log(freeDesks);
   const { data: allWorkspaces, isLoading } = useGetAllWorkspaces();
-  const grid: Desk[][] = (data?.data.floorPlan ?? []).map((row, rowIdx) =>
-    row.map((val, colIdx) => {
-      if (val !== 0) {
-        return {
-          row: rowIdx,
-          col: colIdx,
-          id: val,
-          status: "available",
-        };
-      } else {
-        return null;
-      }
-    }),
-  );
+
+  const grid: (Desk | null)[][] = useMemo(() => {
+    if (!Array.isArray(freeDesks) || isFetchingDesks) return [];
+
+    return (data?.data.floorPlan ?? []).map((row, rowIdx) =>
+      row.map((val, colIdx) => {
+        if (val !== 0) {
+          const found = freeDesks.find((desk) => desk.id === val);
+
+          let status: "available" | "partial" | "booked" = "available";
+
+          if (found) {
+            status = found.isFullDay ? "booked" : "partial";
+          }
+
+          return {
+            row: rowIdx,
+            col: colIdx,
+            id: val,
+            status,
+          };
+        } else {
+          return null;
+        }
+      }),
+    );
+  }, [freeDesks, isFetchingDesks, data?.data.floorPlan]);
+
   const items =
     allWorkspaces?.items?.filter(
       (workspace) => workspace.id.toString() !== id.toString(),

@@ -58,10 +58,10 @@ export function DeskLayoutShow({ grid, onDeskClick }: DeskBookingProps) {
                 },
               }}
             >
-              <DeskBook />
+              <DeskBook status={desk.status} />
             </Box>
           );
-        })
+        }),
       )}
     </Box>
   );

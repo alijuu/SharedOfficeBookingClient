@@ -30,8 +30,7 @@ export interface UpdateWorkspace {
   id: string;
 }
 export interface CreateBooking {
-  userId: string;
-  deskId: string;
+  deskId: number;
   type: number;
   startTime: string;
   endTime: string;
@@ -137,11 +136,19 @@ export function useGetAvailableDesk(id: string) {
     queryKey: ["desks/available", id],
     queryFn: async () => {
       const { data } = await apiClient.get(
-        `/api/desk/workspace/${id}/booked-now`,
+        `/api/desk/workspace/${id}/booked-today`,
       );
       return data;
     },
   });
 }
 
-// export const useGetBookingDest = createQueryHook<>();
+export function useGetBooking(id: string) {
+  return useQuery({
+    queryKey: ["Booking/desk", id],
+    queryFn: async () => {
+      const { data } = await apiClient.get(`/api/Booking/desk/${id}`);
+      return data;
+    },
+  });
+}
