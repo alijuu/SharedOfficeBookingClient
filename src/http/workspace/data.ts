@@ -170,4 +170,12 @@ export const useGetUserBookings = createQueryHook<Booking[]>(() => ({
   },
 }));
 
-// export const useGetBookingDest = createQueryHook<>();
+export function useGetBooking(id: string) {
+  return useQuery({
+    queryKey: ["Booking/desk", id],
+    queryFn: async () => {
+      const { data } = await apiClient.get(`/api/Booking/desk/${id}`);
+      return data;
+    },
+  });
+}
