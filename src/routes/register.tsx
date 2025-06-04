@@ -24,18 +24,10 @@ function RouteComponent() {
   const [error, setError] = useState<string>();
   const [showLoader, setShowLoader] = useState(false);
 
-
-  //const { control, handleSubmit } = useForm({
-   // resolver: valibotResolver(useRegisterSchema()),
-  //});
-
   const { control, handleSubmit } = useForm({
     resolver: valibotResolver(useRegisterSchema()),
-    defaultValues: { email: '', username: '', password: '' }
+    defaultValues: { email: "", username: "", password: "" },
   });
-  
-
-
 
   const navigate = useNavigate();
   const { mutate: register, isPending } = useRegister();
@@ -52,7 +44,7 @@ function RouteComponent() {
       },
     });
     setTimeout(() => {
-      setShowLoader(false); // Hide the loader after 2 seconds
+      setShowLoader(false);
     }, 500);
   };
 

@@ -11,13 +11,11 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as TestImport } from './routes/test'
 import { Route as RegisterImport } from './routes/register'
 import { Route as LoginImport } from './routes/login'
 import { Route as BookingsImport } from './routes/bookings'
 import { Route as DashboardImport } from './routes/_dashboard'
 import { Route as AuthImport } from './routes/_auth'
-import { Route as LandingPageImport } from './routes/LandingPage'
 import { Route as IndexImport } from './routes/index'
 import { Route as AuthHomeImport } from './routes/_auth/home'
 import { Route as AuthFaqImport } from './routes/_auth/faq'
@@ -29,17 +27,10 @@ import { Route as DashboardAdminUsersIndexImport } from './routes/_dashboard/adm
 import { Route as DashboardAdminDeskIndexImport } from './routes/_dashboard/admin/desk/index'
 import { Route as AuthWorkspaceIdIndexImport } from './routes/_auth/workspace/$id/index'
 import { Route as DashboardAdminWorkspaceCreateImport } from './routes/_dashboard/admin/workspace/create'
-import { Route as AuthWorkspaceIdBookImport } from './routes/_auth/workspace/$id/book'
 import { Route as DashboardAdminWorkspaceIdIndexImport } from './routes/_dashboard/admin/workspace/$id/index'
 import { Route as DashboardAdminWorkspaceIdEditImport } from './routes/_dashboard/admin/workspace/$id/edit'
 
 // Create/Update Routes
-
-const TestRoute = TestImport.update({
-  id: '/test',
-  path: '/test',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const RegisterRoute = RegisterImport.update({
   id: '/register',
@@ -66,12 +57,6 @@ const DashboardRoute = DashboardImport.update({
 
 const AuthRoute = AuthImport.update({
   id: '/_auth',
-  getParentRoute: () => rootRoute,
-} as any)
-
-const LandingPageRoute = LandingPageImport.update({
-  id: '/LandingPage',
-  path: '/LandingPage',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -143,12 +128,6 @@ const DashboardAdminWorkspaceCreateRoute =
     getParentRoute: () => DashboardRoute,
   } as any)
 
-const AuthWorkspaceIdBookRoute = AuthWorkspaceIdBookImport.update({
-  id: '/workspace/$id/book',
-  path: '/workspace/$id/book',
-  getParentRoute: () => AuthRoute,
-} as any)
-
 const DashboardAdminWorkspaceIdIndexRoute =
   DashboardAdminWorkspaceIdIndexImport.update({
     id: '/admin/workspace/$id/',
@@ -172,13 +151,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/LandingPage': {
-      id: '/LandingPage'
-      path: '/LandingPage'
-      fullPath: '/LandingPage'
-      preLoaderRoute: typeof LandingPageImport
       parentRoute: typeof rootRoute
     }
     '/_auth': {
@@ -216,13 +188,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterImport
       parentRoute: typeof rootRoute
     }
-    '/test': {
-      id: '/test'
-      path: '/test'
-      fullPath: '/test'
-      preLoaderRoute: typeof TestImport
-      parentRoute: typeof rootRoute
-    }
     '/_auth/create': {
       id: '/_auth/create'
       path: '/create'
@@ -257,13 +222,6 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin'
       preLoaderRoute: typeof DashboardAdminIndexImport
       parentRoute: typeof DashboardImport
-    }
-    '/_auth/workspace/$id/book': {
-      id: '/_auth/workspace/$id/book'
-      path: '/workspace/$id/book'
-      fullPath: '/workspace/$id/book'
-      preLoaderRoute: typeof AuthWorkspaceIdBookImport
-      parentRoute: typeof AuthImport
     }
     '/_dashboard/admin/workspace/create': {
       id: '/_dashboard/admin/workspace/create'
@@ -323,7 +281,6 @@ interface AuthRouteChildren {
   AuthCreateRoute: typeof AuthCreateRoute
   AuthFaqRoute: typeof AuthFaqRoute
   AuthHomeRoute: typeof AuthHomeRoute
-  AuthWorkspaceIdBookRoute: typeof AuthWorkspaceIdBookRoute
   AuthWorkspaceIdIndexRoute: typeof AuthWorkspaceIdIndexRoute
 }
 
@@ -331,7 +288,6 @@ const AuthRouteChildren: AuthRouteChildren = {
   AuthCreateRoute: AuthCreateRoute,
   AuthFaqRoute: AuthFaqRoute,
   AuthHomeRoute: AuthHomeRoute,
-  AuthWorkspaceIdBookRoute: AuthWorkspaceIdBookRoute,
   AuthWorkspaceIdIndexRoute: AuthWorkspaceIdIndexRoute,
 }
 
@@ -365,18 +321,15 @@ const DashboardRouteWithChildren = DashboardRoute._addFileChildren(
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/LandingPage': typeof LandingPageRoute
   '': typeof DashboardRouteWithChildren
   '/bookings': typeof BookingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/test': typeof TestRoute
   '/create': typeof AuthCreateRoute
   '/faq': typeof AuthFaqRoute
   '/home': typeof AuthHomeRoute
   '/admin/home': typeof DashboardAdminHomeRoute
   '/admin': typeof DashboardAdminIndexRoute
-  '/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
   '/admin/workspace/create': typeof DashboardAdminWorkspaceCreateRoute
   '/workspace/$id': typeof AuthWorkspaceIdIndexRoute
   '/admin/desk': typeof DashboardAdminDeskIndexRoute
@@ -388,18 +341,15 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/LandingPage': typeof LandingPageRoute
   '': typeof DashboardRouteWithChildren
   '/bookings': typeof BookingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/test': typeof TestRoute
   '/create': typeof AuthCreateRoute
   '/faq': typeof AuthFaqRoute
   '/home': typeof AuthHomeRoute
   '/admin/home': typeof DashboardAdminHomeRoute
   '/admin': typeof DashboardAdminIndexRoute
-  '/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
   '/admin/workspace/create': typeof DashboardAdminWorkspaceCreateRoute
   '/workspace/$id': typeof AuthWorkspaceIdIndexRoute
   '/admin/desk': typeof DashboardAdminDeskIndexRoute
@@ -412,19 +362,16 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/LandingPage': typeof LandingPageRoute
   '/_auth': typeof AuthRouteWithChildren
   '/_dashboard': typeof DashboardRouteWithChildren
   '/bookings': typeof BookingsRoute
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
-  '/test': typeof TestRoute
   '/_auth/create': typeof AuthCreateRoute
   '/_auth/faq': typeof AuthFaqRoute
   '/_auth/home': typeof AuthHomeRoute
   '/_dashboard/admin/home': typeof DashboardAdminHomeRoute
   '/_dashboard/admin/': typeof DashboardAdminIndexRoute
-  '/_auth/workspace/$id/book': typeof AuthWorkspaceIdBookRoute
   '/_dashboard/admin/workspace/create': typeof DashboardAdminWorkspaceCreateRoute
   '/_auth/workspace/$id/': typeof AuthWorkspaceIdIndexRoute
   '/_dashboard/admin/desk/': typeof DashboardAdminDeskIndexRoute
@@ -438,18 +385,15 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/LandingPage'
     | ''
     | '/bookings'
     | '/login'
     | '/register'
-    | '/test'
     | '/create'
     | '/faq'
     | '/home'
     | '/admin/home'
     | '/admin'
-    | '/workspace/$id/book'
     | '/admin/workspace/create'
     | '/workspace/$id'
     | '/admin/desk'
@@ -460,18 +404,15 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/LandingPage'
     | ''
     | '/bookings'
     | '/login'
     | '/register'
-    | '/test'
     | '/create'
     | '/faq'
     | '/home'
     | '/admin/home'
     | '/admin'
-    | '/workspace/$id/book'
     | '/admin/workspace/create'
     | '/workspace/$id'
     | '/admin/desk'
@@ -482,19 +423,16 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
-    | '/LandingPage'
     | '/_auth'
     | '/_dashboard'
     | '/bookings'
     | '/login'
     | '/register'
-    | '/test'
     | '/_auth/create'
     | '/_auth/faq'
     | '/_auth/home'
     | '/_dashboard/admin/home'
     | '/_dashboard/admin/'
-    | '/_auth/workspace/$id/book'
     | '/_dashboard/admin/workspace/create'
     | '/_auth/workspace/$id/'
     | '/_dashboard/admin/desk/'
@@ -507,24 +445,20 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  LandingPageRoute: typeof LandingPageRoute
   AuthRoute: typeof AuthRouteWithChildren
   DashboardRoute: typeof DashboardRouteWithChildren
   BookingsRoute: typeof BookingsRoute
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
-  TestRoute: typeof TestRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  LandingPageRoute: LandingPageRoute,
   AuthRoute: AuthRouteWithChildren,
   DashboardRoute: DashboardRouteWithChildren,
   BookingsRoute: BookingsRoute,
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
-  TestRoute: TestRoute,
 }
 
 export const routeTree = rootRoute
@@ -538,20 +472,15 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/LandingPage",
         "/_auth",
         "/_dashboard",
         "/bookings",
         "/login",
-        "/register",
-        "/test"
+        "/register"
       ]
     },
     "/": {
       "filePath": "index.tsx"
-    },
-    "/LandingPage": {
-      "filePath": "LandingPage.tsx"
     },
     "/_auth": {
       "filePath": "_auth.tsx",
@@ -559,7 +488,6 @@ export const routeTree = rootRoute
         "/_auth/create",
         "/_auth/faq",
         "/_auth/home",
-        "/_auth/workspace/$id/book",
         "/_auth/workspace/$id/"
       ]
     },
@@ -585,9 +513,6 @@ export const routeTree = rootRoute
     "/register": {
       "filePath": "register.tsx"
     },
-    "/test": {
-      "filePath": "test.tsx"
-    },
     "/_auth/create": {
       "filePath": "_auth/create.tsx",
       "parent": "/_auth"
@@ -607,10 +532,6 @@ export const routeTree = rootRoute
     "/_dashboard/admin/": {
       "filePath": "_dashboard/admin/index.tsx",
       "parent": "/_dashboard"
-    },
-    "/_auth/workspace/$id/book": {
-      "filePath": "_auth/workspace/$id/book.tsx",
-      "parent": "/_auth"
     },
     "/_dashboard/admin/workspace/create": {
       "filePath": "_dashboard/admin/workspace/create.tsx",
