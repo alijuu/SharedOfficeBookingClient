@@ -65,7 +65,7 @@ export function useEditWorkspace() {
     mutationFn: async (data: UpdateWorkspace) => {
       const response = await apiClient.put(
         `/api/workspaces/update/${data.id}`,
-        data.workspace
+        data.workspace,
       );
       return response.data;
     },
@@ -145,16 +145,6 @@ export function useGetAvailableDesk(id: string) {
       const { data } = await apiClient.get(
         `/api/desk/workspace/${id}/booked-today`,
       );
-      return data;
-    },
-  });
-}
-
-export function useGetBooking(id: string) {
-  return useQuery({
-    queryKey: ["Booking/desk", id],
-    queryFn: async () => {
-      const { data } = await apiClient.get(`/api/Booking/desk/${id}`);
       return data;
     },
   });
